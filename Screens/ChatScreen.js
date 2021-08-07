@@ -2,7 +2,7 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 import Constants from 'expo-constants';
 import { GiftedChat } from "react-native-gifted-chat";
-import { MaterialIndicator } from 'react-native-indicators';
+import { PulseIndicator } from 'react-native-indicators';
 import _ from 'lodash';
 import Fire from '../Fire';
 
@@ -39,10 +39,10 @@ export default class ChatScreen extends React.Component {
         if (_.isEmpty(this.state.messages)) {
             return (
                 <SafeAreaView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
-                    <MaterialIndicator
+                    <PulseIndicator
                         animating
                         size={100}
-                        color='black'
+                        color='#d4973b'
                     />
                 </SafeAreaView>
             );
