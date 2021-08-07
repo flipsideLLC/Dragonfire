@@ -6,7 +6,7 @@ export default class IntroScreen extends React.Component {
 
     state = {
         name: '',
-        roomCode: '' // Check for roomcode - 
+        roomCode: '' // Check for roomcode - if exists, pull those messages, otherwise create the room
     };
 
     continue = () => {
