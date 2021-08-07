@@ -7,18 +7,20 @@ import Fire from '../Fire';
 export default class ChatScreen extends React.Component {
 
     state = {
-        messages: []
+        messages: [],
+        roomCode: this.props.navigation.state.params.roomCode
     }
 
     get user() {
         return {
             _id: Fire.uid,
-            name: this.props.navigation.state.params.name
+            name: this.props.navigation.state.params.name,
         };
     }
 
     componentDidMount() {
-        Fire.get(message => 
+        Fire.room(this.state.roomCode);
+        Fire.get(message =>
             this.setState(previous => ({
                 messages: GiftedChat.append(previous.messages, message)
             }))
@@ -30,24 +32,12 @@ export default class ChatScreen extends React.Component {
     }
 
     render() {
-        const chat = <GiftedChat messages={this.state.messages} onSend={Fire.send} user={this.user}/>;
+        const chat = <GiftedChat messages={this.state.messages} onSend={Fire.send} user={this.user} />;
 
-
-        // Removed this and it works just fine on android..?
-        
-        /*
-        if(Platform.OS === 'android') {
-            return (
-                <KeyboardAvoidingView style={{flex: 1}} behavior='padding' keyboardVerticalOffset={30} enabled>
-                   {chat}
-                </KeyboardAvoidingView>
-            );
-        }
-        */
-
-        return <SafeAreaView style={{flex: 1, marginTop: Constants.statusBarHeight}}> 
-            {chat}
-         </SafeAreaView>
+        return (
+            <SafeAreaView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
+                {chat}
+            </SafeAreaView>
+        );
     }
-
 }

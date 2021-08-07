@@ -6,38 +6,47 @@ export default class IntroScreen extends React.Component {
 
     state = {
         name: '',
-        roomCode: '' // Check for roomcode - 
+        roomCode: '',
     };
 
     continue = () => {
-        this.props.navigation.navigate("Chat", {name: this.state.name})
+        this.props.navigation.navigate("Chat", { name: this.state.name, roomCode: this.state.roomCode })
     }
 
     render() {
         return (
-            <View style = {styles.container}>
+            <View style={styles.container}>
                 <View style={styles.circle} />
-                <View style={{marginTop: 64}}> 
+                <View style={{ marginTop: 64 }}>
                     <Image
                         source={require('../assets/AppIcon3.png')}
-                        style={{ width: 100, height: 100, alignSelf: 'center'}}
+                        style={{ width: 100, height: 100, alignSelf: 'center' }}
                     />
                 </View>
 
-                <View style={{marginHorizontal: 32}}>
+                <View style={{ marginHorizontal: 32 }}>
                     <Text style={styles.header}>Username</Text>
-                    <TextInput style={styles.input} 
-                        placeholder = "Dragonfire Messenger App" 
-                        onChangeText={name => { 
-                            this.setState({name});
+                    <TextInput style={styles.input}
+                        placeholder="Dragonfire Messenger App"
+                        onChangeText={name => {
+                            this.setState({ name });
                         }}
-                        value = {this.state.name}
+                        value={this.state.name}
                     />
 
-                    <View style={{alignItems: 'flex-end', marginTop: 64}}>
+                    <Text style={styles.header}>Room Code</Text>
+                    <TextInput style={styles.input}
+                        placeholder="Dragonfire Messenger App"
+                        onChangeText={roomCode => {
+                            this.setState({ roomCode });
+                        }}
+                        value={this.state.roomCode}
+                    />
+
+                    <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
                         <TouchableOpacity style={styles.continue}
                             onPress={this.continue}>
-                                <Ionicons name='arrow-forward-outline' size={24} color='#FFF'/>
+                            <Ionicons name='arrow-forward-outline' size={24} color='#FFF' />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -80,7 +89,7 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 35,
-        backgroundColor: '#9075E3',
+        backgroundColor: '#d4973b',
         alignItems: 'center',
         justifyContent: 'center',
 

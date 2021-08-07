@@ -1,14 +1,16 @@
 import firebase from "firebase";
+GLOBAL = require('./Global');
 
 class Fire {
-    constructor(){
+    
+
+    constructor() {
         this.init();
         this.checkAuth();
-
     }
 
     init = () => {
-        if(!firebase.apps.length) {
+        if (!firebase.apps.length) {
             firebase.initializeApp({
                 apiKey: "AIzaSyCLL8UBSqNod7V9SdJlKQa35zsLRW9JRHQ",
                 authDomain: "dragonfire-880ff.firebaseapp.com",
@@ -20,14 +22,24 @@ class Fire {
                 measurementId: "G-62GNCZRLM2"
             });
 
-        }else{
+        } else {
             firebase.app();
         }
     };
 
+    room = code => {
+        if(code === ''){
+            console.log('User inputted no room key, setting default chat room');
+            GLOBAL.roomCode = 'messages';
+        } else {
+            console.log('User inputted: ', code, ' as their room key.')
+            GLOBAL.roomCode = code;
+        }
+    }
+
     checkAuth = () => {
         firebase.auth().onAuthStateChanged(user => {
-            if(!user) {
+            if (!user) {
                 firebase.auth().signInAnonymously();
             }
         });
@@ -36,10 +48,10 @@ class Fire {
     send = messages => {
         messages.forEach(item => {
             const message = {
-                text: item.text, 
+                text: item.text,
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
                 user: item.user
-            }   
+            }
 
             this.db.push(message)
         });
@@ -48,11 +60,11 @@ class Fire {
     // How to send a message to certain group
 
     parse = message => {
-        const {user, text, timestamp} = message.val()
-        const {key: _id} = message
+        const { user, text, timestamp } = message.val()
+        const { key: _id } = message
         const createdAt = new Date(timestamp)
 
-        return{
+        return {
             _id,
             createdAt,
             text,
@@ -64,16 +76,16 @@ class Fire {
         this.db.on('child_added', snapshot => callback(this.parse(snapshot)));
     };
 
-    off(){
+    off() {
         this.db.off()
     }
 
     get db() {
-        return firebase.database().ref('messages');
+        return firebase.database().ref(GLOBAL.roomCode);
     }
 
     get uid() {
-        return(firebase.auth().currentUser || {}).uid
+        return (firebase.auth().currentUser || {}).uid
     }
 
 }
