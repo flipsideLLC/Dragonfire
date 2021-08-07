@@ -1,3 +1,4 @@
 module.exports = {
-	roomCode: 'messages',
+	name: '',
+	roomCode: '',
 };

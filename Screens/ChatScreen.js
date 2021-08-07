@@ -2,20 +2,20 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 import Constants from 'expo-constants';
 import { GiftedChat } from "react-native-gifted-chat";
-import { PulseIndicator } from 'react-native-indicators';
 import Fire from '../Fire';
+import GLOBAL from '../Global';
 
 export default class ChatScreen extends React.Component {
 
     state = {
         messages: [],
-        roomCode: this.props.navigation.state.params.roomCode
+        roomCode: GLOBAL.roomCode
     }
 
     get user() {
         return {
             _id: Fire.uid,
-            name: this.props.navigation.state.params.name,
+            name: GLOBAL.name
         };
     }
 

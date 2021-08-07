@@ -1,5 +1,5 @@
 import firebase from "firebase";
-GLOBAL = require('./Global');
+import GLOBAL from './Global';
 
 class Fire {
     
@@ -28,13 +28,7 @@ class Fire {
     };
 
     room = code => {
-        if(code === ''){
-            console.log('User inputted no room key, setting default chat room');
-            GLOBAL.roomCode = 'messages';
-        } else {
-            console.log('User inputted: ', code, ' as their room key.')
-            GLOBAL.roomCode = code;
-        }
+        GLOBAL.roomCode = code;
     }
 
     checkAuth = () => {

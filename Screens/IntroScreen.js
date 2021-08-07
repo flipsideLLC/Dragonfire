@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import _ from 'lodash';
+import GLOBAL from '../Global';
 
 export default class IntroScreen extends React.Component {
 
@@ -10,7 +12,19 @@ export default class IntroScreen extends React.Component {
     };
 
     continue = () => {
-        this.props.navigation.navigate("Chat", { name: this.state.name, roomCode: this.state.roomCode })
+        if(_.isEmpty(this.state.name)) {
+            console.log('setting default name');
+            GLOBAL.name = '?';
+        } else {
+            GLOBAL.name = this.state.name;
+        }
+        if(_.isEmpty(this.state.roomCode)) {
+            console.log('setting default room');
+            GLOBAL.roomCode = 'general';
+        } else {
+            GLOBAL.roomCode = this.state.roomCode;
+        }
+        this.props.navigation.navigate("Chat", {})
     }
 
     render() {
