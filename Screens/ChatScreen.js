@@ -1,6 +1,6 @@
 import React from "react";
-import {Platform, KeyboardAvoidingView, SafeAreaView, Text } from "react-native";
-import { View } from "react-native-animatable";
+import { SafeAreaView } from "react-native";
+import Constants from 'expo-constants';
 import { GiftedChat } from "react-native-gifted-chat";
 import Fire from '../Fire';
 
@@ -32,6 +32,10 @@ export default class ChatScreen extends React.Component {
     render() {
         const chat = <GiftedChat messages={this.state.messages} onSend={Fire.send} user={this.user}/>;
 
+
+        // Removed this and it works just fine on android..?
+        
+        /*
         if(Platform.OS === 'android') {
             return (
                 <KeyboardAvoidingView style={{flex: 1}} behavior='padding' keyboardVerticalOffset={30} enabled>
@@ -39,8 +43,9 @@ export default class ChatScreen extends React.Component {
                 </KeyboardAvoidingView>
             );
         }
+        */
 
-        return <SafeAreaView style={{flex: 1}}> 
+        return <SafeAreaView style={{flex: 1, marginTop: Constants.statusBarHeight}}> 
             {chat}
          </SafeAreaView>
     }
