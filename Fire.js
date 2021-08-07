@@ -27,10 +27,6 @@ class Fire {
         }
     };
 
-    room = code => {
-        GLOBAL.roomCode = code;
-    }
-
     checkAuth = () => {
         firebase.auth().onAuthStateChanged(user => {
             if (!user) {
