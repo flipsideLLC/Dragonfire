@@ -1,9 +1,10 @@
 {
-  "expoServerNgrokUrl": "https://jf-dg4.ddawkins20.dragonfire.exp.direct",
-  "packagerNgrokUrl": "https://packager.jf-dg4.ddawkins20.dragonfire.exp.direct",
-  "ngrokPid": 12980,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19000,
-  "packagerPid": null
+  "packagerPid": null,
+  "webpackServerPort": null
 }
