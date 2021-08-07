@@ -48,8 +48,15 @@ export default class ChatScreen extends React.Component {
     sendButton = (props) => {
         return (
             <Send {...props}>
-                <View style={{ marginRight: 15, marginBottom: 5 }}>
-                    <FontAwesome size={35} color='#d4973b' name='send' />
+                <View style={{
+                    marginRight: -15, marginBottom: -20, width: 70,
+                    height: 70,
+                    borderRadius: 35,
+                    backgroundColor: '#d4973b',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <FontAwesome style={{ marginRight: 15, marginBottom: 15 }} size={30} color='white' name='send' />
                 </View>
             </Send>
         );
@@ -65,7 +72,7 @@ export default class ChatScreen extends React.Component {
             showAvatarForEveryMessage={true}
             renderChatEmpty={this.loading}
             renderSend={this.sendButton}
-            alwaysShowSend={true}
+            alwaysShowSend={false}
         />;
         return (
             <View style={{ flex: 1, marginTop: Constants.statusBarHeight, backgroundColor: 'white' }}>
