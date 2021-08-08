@@ -67,7 +67,6 @@ export default class ChatScreen extends React.Component {
         const chat = <GiftedChat
             messages={this.state.messages}
             onSend={Fire.send} user={this.user}
-            renderLoading={this.loading}
             placeholder={'Type a message...'}
             showAvatarForEveryMessage={true}
             renderChatEmpty={this.loading}
