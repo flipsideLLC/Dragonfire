@@ -71,7 +71,7 @@ class Fire {
     }
 
     get db() {
-        return firebase.database().ref(GLOBAL.roomCode);
+        return firebase.database().ref(GLOBAL.roomCode.toLowerCase());
     }
 
     get uid() {
