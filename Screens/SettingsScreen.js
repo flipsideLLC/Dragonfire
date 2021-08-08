@@ -6,7 +6,10 @@ import GLOBAL from '../Global';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 
-export default class IntroScreen extends React.Component {
+
+// Just a copy of the intro screen code. 
+
+export default class SettingsScreen extends React.Component {
 
     state = {
         name: '',

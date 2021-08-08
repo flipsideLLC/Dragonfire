@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { GiftedChat, Send } from "react-native-gifted-chat";
 import Fire from '../Fire';
 import GLOBAL from '../Global';
+import { StatusBar } from 'expo-status-bar';
 
 export default class ChatScreen extends React.Component {
 
@@ -36,6 +37,7 @@ export default class ChatScreen extends React.Component {
     loading = () => {
         return (
             <View style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
+                <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
                 <PulseIndicator
                     animating
                     size={100}
@@ -52,7 +54,7 @@ export default class ChatScreen extends React.Component {
                     marginRight: -15, marginBottom: -20, width: 70,
                     height: 70,
                     borderRadius: 35,
-                    backgroundColor: '#d4973b',
+                    backgroundColor: '#d4973b', // 1b2029 // 
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
@@ -67,14 +69,14 @@ export default class ChatScreen extends React.Component {
         const chat = <GiftedChat
             messages={this.state.messages}
             onSend={Fire.send} user={this.user}
-            placeholder={'Type a message...'}
+            placeholder={'Message the group'}
             showAvatarForEveryMessage={true}
             renderChatEmpty={this.loading}
             renderSend={this.sendButton}
             alwaysShowSend={false}
         />;
         return (
-            <View style={{ flex: 1, marginTop: Constants.statusBarHeight, backgroundColor: 'white' }}>
+            <View style={{ flex: 1, marginTop: Constants.statusBarHeight, backgroundColor: '#1b2029' }}>
                 {chat}
             </View>
         );
