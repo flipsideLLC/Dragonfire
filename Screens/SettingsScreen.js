@@ -5,6 +5,7 @@ import _ from 'lodash';
 import GLOBAL from '../Global';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
+import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 
 
 // Just a copy of the intro screen code. 

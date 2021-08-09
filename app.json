@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Dragonfire",
-    "slug": "Dragonfire",
-    "version": "3.7.0",
+    "name": "DragonChat",
+    "slug": "DragonChat",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/AppIcon3.png",
     "splash": {
@@ -18,13 +18,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dntgames.manage",
-      "buildNumber": "3.7.0",
+      "bundleIdentifier": "com.dntgames.dragonfire",
+      "buildNumber": "1.0.0",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-9889547844187480~7779089264"
+        "googleMobileAdsAppId": "ca-app-pub-9889547844187480~7593078358" 
       },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "CityFood! requires your location to find restaurants near you. Please allow location services to determine your location."
+        
       }
     },
     "android": {
@@ -32,10 +32,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 7,
+      "versionCode": 1,
       "package": "com.dntgames.manage",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-9889547844187480~4434778616"
+        "googleMobileAdsAppId": "ca-app-pub-9889547844187480~8467176323"
       }
     },
     "web": {

@@ -7,6 +7,7 @@ import { GiftedChat, Send } from "react-native-gifted-chat";
 import Fire from '../Fire';
 import GLOBAL from '../Global';
 import { StatusBar } from 'expo-status-bar';
+import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 
 export default class ChatScreen extends React.Component {
 
@@ -76,7 +77,7 @@ export default class ChatScreen extends React.Component {
             alwaysShowSend={false}
         />;
         return (
-            <View style={{ flex: 1, marginTop: Constants.statusBarHeight, backgroundColor: '#1b2029' }}>
+            <View style={{ flex: 1, marginTop: Constants.statusBarHeight, backgroundColor: 'white' /* '#1b2029' */ }}> 
                 {chat}
             </View>
         );

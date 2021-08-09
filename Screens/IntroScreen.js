@@ -1,17 +1,35 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import _ from 'lodash';
 import GLOBAL from '../Global';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
+import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
+
+const androidBanner = 'ca-app-pub-9889547844187480/8148995014'; 
+const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
+const iosBanner = 'ca-app-pub-9889547844187480/5522831677';
+const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
+
+const windowWidth = Dimensions.get('window').width;
 
 export default class IntroScreen extends React.Component {
 
-    state = {
-        name: '',
-        roomCode: '',
-    };
+    constructor() {
+        super();
+    
+        this.state = {
+            name: '',
+            roomCode: '',
+        };
+
+        
+        this.bannerAdId = Platform.OS === 'ios' ? iosBanner : androidBanner;
+        // Interstitials not set up yet
+        this.interstitialAdId = Platform.OS === 'ios' ? iosInterstitial : androidInterstitial;
+    
+    }
 
     continue = () => {
         if(_.isEmpty(this.state.name)) {
@@ -67,6 +85,14 @@ export default class IntroScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                
+                <View style={{ width: windowWidth, flex: 1 }}>
+                        <AdMobBanner
+                            bannerSize="fullBanner"
+                            adUnitID={this.bannerAdId} // Test ID, Replace with your-admob-unit-id
+                            servePersonalizedAds={false} // true or false
+                        />
+                    </View>
             </View>
         );
     }
@@ -76,14 +102,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Constants.statusBarHeight,
-        backgroundColor: '#1b2029' //1b2029  //  // F4F5F7
+        backgroundColor: '#F4F5F7' // '#1b2029' //1b2029  //  // F4F5F7
     },
     circle: {
         width: 500,
         height: 500,
         borderRadius: 250,
-        borderColor: 'black',
-        backgroundColor: '#ededed', // #FFF //152136 // fcfced
+        // borderColor: 'black',
+        backgroundColor: '#FFF', // '#ededed', // #FFF //152136 // fcfced
         position: 'absolute',
         left: -120,
         top: -20
