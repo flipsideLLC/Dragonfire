@@ -43,6 +43,7 @@ export default class SettingsScreen extends React.Component {
                 <View style={{ marginHorizontal: 32 }}>
                     <Text style={styles.header}>Dark Mode</Text>
                     <Switch
+                        style={{ alignSelf: 'flex-start' }}
                         trackColor={{ false: "#767577", true: "grey" }}
                         thumbColor={this.state.darkMode ? "#d4973b" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
@@ -52,12 +53,12 @@ export default class SettingsScreen extends React.Component {
 
                     <Text style={styles.header}>Show Bubbles</Text>
                     <Switch
+                        style={{ alignSelf: 'flex-start' }}
                         trackColor={{ false: "#767577", true: "grey" }}
                         thumbColor={this.state.bubbles ? "#d4973b" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={this.toggleBubbles}
                         value={this.state.bubbles}
-
                     />
 
                     <View style={{ alignItems: 'flex-start', marginTop: 64 }}>
