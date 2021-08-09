@@ -33,6 +33,11 @@ export default class IntroScreen extends React.Component {
         this.props.navigation.navigate("Settings", {})
     }
 
+    componentDidMount() {
+        console.log('darkMode', GLOBAL.darkMode);
+        this.forceUpdate();
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Constants.statusBarHeight,
-        backgroundColor: '#1b2029' //1b2029  //  // F4F5F7
+        backgroundColor: GLOBAL.darkMode ? '#1b2029' : '#F4F5F7' //1b2029  //  // F4F5F7
     },
     circle: {
         width: 500,

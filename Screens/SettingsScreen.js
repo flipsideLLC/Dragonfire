@@ -30,7 +30,6 @@ export default class SettingsScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {console.log(GLOBAL.darkMode)}
                 <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
                 <View style={styles.circle} />
                 <View style={{ marginTop: 10 }}>
