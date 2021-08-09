@@ -32,13 +32,13 @@ export default class IntroScreen extends React.Component {
     }
 
     continue = () => {
-        if(_.isEmpty(this.state.name)) {
+        if (_.isEmpty(this.state.name)) {
             console.log('setting default name');
             GLOBAL.name = '?';
         } else {
             GLOBAL.name = this.state.name;
         }
-        if(_.isEmpty(this.state.roomCode)) {
+        if (_.isEmpty(this.state.roomCode)) {
             console.log('setting default room');
             GLOBAL.roomCode = 'general';
         } else {
@@ -47,16 +47,23 @@ export default class IntroScreen extends React.Component {
         this.props.navigation.navigate("Chat", {})
     }
 
+    settings = () => {
+        this.props.navigation.navigate("Settings", {})
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
                 <View style={styles.circle} />
                 <View style={{ marginTop: 10 }}>
-                    <Image
-                        source={require('../assets/AppIcon3.png')}
-                        style={{ width: 64, height: 64, alignSelf: 'center' }}
-                    />
+                    <TouchableOpacity
+                        onPress={this.settings}>
+                        <Image
+                            source={require('../assets/AppIcon3.png')}
+                            style={{ width: 64, height: 64, alignSelf: 'center' }}
+                        />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ marginHorizontal: 32 }}>
