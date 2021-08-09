@@ -1,40 +1,36 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Switch } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import _ from 'lodash';
 import GLOBAL from '../Global';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 
-
-// Just a copy of the intro screen code. 
-
 export default class SettingsScreen extends React.Component {
 
     state = {
-        name: '',
-        roomCode: '',
+        darkMode: GLOBAL.darkMode,
+        bubbles: GLOBAL.bubbles,
     };
 
-    continue = () => {
-        if(_.isEmpty(this.state.name)) {
-            console.log('setting default name');
-            GLOBAL.name = '?';
-        } else {
-            GLOBAL.name = this.state.name;
-        }
-        if(_.isEmpty(this.state.roomCode)) {
-            console.log('setting default room');
-            GLOBAL.roomCode = 'general';
-        } else {
-            GLOBAL.roomCode = this.state.roomCode;
-        }
-        this.props.navigation.navigate("Chat", {})
+    back = () => {
+        this.props.navigation.goBack()
+    }
+
+    toggleDarkMode = () => {
+        this.setState({ darkMode: !this.state.darkMode })
+        GLOBAL.darkMode = !GLOBAL.darkMode;
+    }
+
+    toggleBubbles = () => {
+        this.setState({ bubbles: !this.state.bubbles })
+        GLOBAL.bubbles = !GLOBAL.bubbles;
     }
 
     render() {
         return (
             <View style={styles.container}>
+                {console.log(GLOBAL.darkMode)}
                 <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
                 <View style={styles.circle} />
                 <View style={{ marginTop: 10 }}>
@@ -45,28 +41,29 @@ export default class SettingsScreen extends React.Component {
                 </View>
 
                 <View style={{ marginHorizontal: 32 }}>
-                    <Text style={styles.header}>Username</Text>
-                    <TextInput style={styles.input}
-                        placeholder="Dragonfire Messenger App"
-                        onChangeText={name => {
-                            this.setState({ name });
-                        }}
-                        value={this.state.name}
+                    <Text style={styles.header}>Dark Mode</Text>
+                    <Switch
+                        trackColor={{ false: "#767577", true: "grey" }}
+                        thumbColor={this.state.darkMode ? "#d4973b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={this.toggleDarkMode}
+                        value={this.state.darkMode}
                     />
 
-                    <Text style={styles.header}>Room Code</Text>
-                    <TextInput style={styles.input}
-                        placeholder="Dragonfire Messenger App"
-                        onChangeText={roomCode => {
-                            this.setState({ roomCode });
-                        }}
-                        value={this.state.roomCode}
+                    <Text style={styles.header}>Show Bubbles</Text>
+                    <Switch
+                        trackColor={{ false: "#767577", true: "grey" }}
+                        thumbColor={this.state.bubbles ? "#d4973b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={this.toggleBubbles}
+                        value={this.state.bubbles}
+
                     />
 
-                    <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
+                    <View style={{ alignItems: 'flex-start', marginTop: 64 }}>
                         <TouchableOpacity style={styles.continue}
-                            onPress={this.continue}>
-                            <Ionicons name='arrow-forward-outline' size={24} color='#FFF' />
+                            onPress={this.back}>
+                            <Ionicons name='arrow-back-outline' size={24} color='#FFF' />
                         </TouchableOpacity>
                     </View>
                 </View>
