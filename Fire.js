@@ -1,8 +1,9 @@
 import firebase from "firebase";
-import GLOBAL from './Global';
+import { connect } from 'react-redux';
 
 class Fire {
-    
+
+    roomCode = ''
 
     constructor() {
         this.init();
@@ -62,6 +63,9 @@ class Fire {
         };
     };
 
+    setRoomCode = code =>
+        roomCode = code;
+
     get = callback => {
         this.db.on('child_added', snapshot => callback(this.parse(snapshot)));
     };
@@ -71,7 +75,7 @@ class Fire {
     }
 
     get db() {
-        return firebase.database().ref(GLOBAL.roomCode.toLowerCase());
+        return firebase.database().ref(roomCode.toLowerCase());
     }
 
     get uid() {

@@ -4,25 +4,25 @@ import Constants from 'expo-constants';
 import { PulseIndicator } from 'react-native-indicators';
 import { FontAwesome } from '@expo/vector-icons';
 import { GiftedChat, Send } from "react-native-gifted-chat";
-import Fire from '../Fire';
-import GLOBAL from '../Global';
+import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
+import Fire from '../Fire';
 
-export default class ChatScreen extends React.Component {
+class ChatScreen extends React.Component {
 
     state = {
         messages: [],
-        roomCode: GLOBAL.roomCode
     }
 
     get user() {
         return {
             _id: Fire.uid,
-            name: GLOBAL.name
+            name: this.props.name
         };
     }
 
     componentDidMount() {
+        Fire.setRoomCode(this.props.roomCode);
         Fire.get(message =>
             this.setState(previous => ({
                 messages: GiftedChat.append(previous.messages, message)
@@ -70,7 +70,7 @@ export default class ChatScreen extends React.Component {
             messages={this.state.messages}
             onSend={Fire.send} user={this.user}
             placeholder={'Message the group'}
-            showAvatarForEveryMessage={true}
+            showAvatarForEveryMessage={this.props.bubbles}
             renderChatEmpty={this.loading}
             renderSend={this.sendButton}
             alwaysShowSend={false}
@@ -82,3 +82,16 @@ export default class ChatScreen extends React.Component {
         );
     }
 }
+
+const mapStateToProps = ({ chat }) => {
+    const { name, roomCode, darkMode, bubbles } = chat;
+
+    console.log('name: ', name);
+    console.log('room: ', roomCode);
+    console.log('darkMode: ', darkMode);
+    console.log('bubbles: ', bubbles)
+
+    return { name, roomCode, darkMode, bubbles };
+}; 
+
+export default connect(mapStateToProps)(ChatScreen);

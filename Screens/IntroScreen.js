@@ -2,47 +2,36 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import _ from 'lodash';
-import GLOBAL from '../Global';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
+import { connect } from 'react-redux';
+import { nameChanged, roomChanged } from '../actions';
+import { withOrientation } from "react-navigation";
 
-export default class IntroScreen extends React.Component {
-
-    state = {
-        name: '',
-        roomCode: '',
-    };
+class IntroScreen extends React.Component {
 
     continue = () => {
-        if (_.isEmpty(this.state.name)) {
+        if (_.isEmpty(this.props.name)) {
             console.log('setting default name');
-            GLOBAL.name = '?';
-        } else {
-            GLOBAL.name = this.state.name;
+            this.props.nameChanged('?');
         }
-        if (_.isEmpty(this.state.roomCode)) {
+        if (_.isEmpty(this.props.roomCode)) {
             console.log('setting default room');
-            GLOBAL.roomCode = 'general';
-        } else {
-            GLOBAL.roomCode = this.state.roomCode;
+            this.props.roomChanged('general');
         }
-        this.props.navigation.navigate("Chat", {})
+        this.props.navigation.navigate('Chat', {});
     }
 
     settings = () => {
-        this.props.navigation.navigate("Settings", {})
-    }
-
-    componentDidMount() {
-        console.log('darkMode', GLOBAL.darkMode);
-        this.forceUpdate();
+        this.props.navigation.navigate('Settings', {})
     }
 
     render() {
+        const { darkMode } = this.props;
         return (
-            <View style={styles.container}>
+            <View style={darkMode ? styles.container_dark : styles.container}>
                 <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-                <View style={styles.circle} />
+                <View style={darkMode ? styles.circle_dark : styles.circle} />
                 <View style={{ marginTop: 10 }}>
                     <TouchableOpacity
                         onPress={this.settings}>
@@ -58,18 +47,18 @@ export default class IntroScreen extends React.Component {
                     <TextInput style={styles.input}
                         placeholder="Dragonfire Messenger App"
                         onChangeText={name => {
-                            this.setState({ name });
+                            this.props.nameChanged(name);
                         }}
-                        value={this.state.name}
+                        value={this.props.name}
                     />
 
                     <Text style={styles.header}>Room Code</Text>
                     <TextInput style={styles.input}
                         placeholder="Dragonfire Messenger App"
                         onChangeText={roomCode => {
-                            this.setState({ roomCode });
+                            this.props.roomChanged(roomCode);
                         }}
-                        value={this.state.roomCode}
+                        value={this.props.roomCode}
                     />
 
                     <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
@@ -84,11 +73,28 @@ export default class IntroScreen extends React.Component {
     }
 }
 
+const mapStateToProps = ({ chat }) => {
+    const { name, roomCode, darkMode } = chat;
+
+    console.log('name: ', name);
+    console.log('room: ', roomCode);
+    console.log('darkMode: ', darkMode);
+
+    return { name, roomCode, darkMode };
+}; 
+
+export default connect(mapStateToProps, { nameChanged, roomChanged })(IntroScreen);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Constants.statusBarHeight,
-        backgroundColor: GLOBAL.darkMode ? '#1b2029' : '#F4F5F7' //1b2029  //  // F4F5F7
+        backgroundColor: '#F4F5F7' //1b2029  //  // F4F5F7
+    },
+    container_dark: {
+        flex: 1,
+        marginTop: Constants.statusBarHeight,
+        backgroundColor: '#1b2029' //1b2029  //  // F4F5F7
     },
     circle: {
         width: 500,
@@ -96,6 +102,16 @@ const styles = StyleSheet.create({
         borderRadius: 250,
         borderColor: 'black',
         backgroundColor: '#ededed', // #FFF //152136 // fcfced
+        position: 'absolute',
+        left: -120,
+        top: -20
+    },
+    circle_dark: {
+        width: 500,
+        height: 500,
+        borderRadius: 250,
+        borderColor: 'black',
+        backgroundColor: 'grey', // #FFF //152136 // fcfced
         position: 'absolute',
         left: -120,
         top: -20
@@ -113,6 +129,7 @@ const styles = StyleSheet.create({
         borderColor: 'black', // BAB7C3
         borderRadius: 30,
         paddingHorizontal: 16,
+        backgroundColor: 'white',
         color: '#514E5A',
         fontWeight: '600',
     },
