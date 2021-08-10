@@ -95,15 +95,15 @@ export default class IntroScreen extends React.Component {
                     </View>
 
                    
-            </View>
-            <View style={{ width: windowWidth, flex: .1 }}>
+                </View>
+                <View style={{ width: windowWidth, flex: .1 }}>
                             <AdMobBanner
                                 bannerSize="fullBanner"
                                 adUnitID={this.bannerAdId} // Test ID, Replace with your-admob-unit-id
                                 servePersonalizedAds={false} // true or false
                             />
-                        </View>
-             </View>
+                    </View>
+            </View>
         );
     }
 }
