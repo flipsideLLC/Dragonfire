@@ -2,58 +2,54 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Switch, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import _ from 'lodash';
-import GLOBAL from '../Global';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
+import { connect } from 'react-redux';
+import { darkModeChanged, bubblesChanged } from '../actions';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 
-const androidBanner = 'ca-app-pub-9889547844187480/8148995014'; 
+const androidBanner = 'ca-app-pub-9889547844187480/8148995014';
 const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
 const iosBanner = 'ca-app-pub-9889547844187480/5522831677';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default class SettingsScreen extends React.Component {
-
+class SettingsScreen extends React.Component {
 
     constructor() {
         super();
-    
+
         this.state = {
             darkMode: GLOBAL.darkMode,
             bubbles: GLOBAL.bubbles,
         };
-        
+
         this.bannerAdId = Platform.OS === 'ios' ? iosBanner : androidBanner;
         // Interstitials not set up yet
         this.interstitialAdId = Platform.OS === 'ios' ? iosInterstitial : androidInterstitial;
-    
-    }
 
-    
+    }
 
     back = () => {
         this.props.navigation.goBack()
     }
 
     toggleDarkMode = () => {
-        this.setState({ darkMode: !this.state.darkMode })
-        GLOBAL.darkMode = !GLOBAL.darkMode;
+        this.props.darkModeChanged();
     }
 
     toggleBubbles = () => {
-        this.setState({ bubbles: !this.state.bubbles })
-        GLOBAL.bubbles = !GLOBAL.bubbles;
+        this.props.bubblesChanged();
     }
 
     render() {
+        const { darkMode } = this.props;
         return (
-            <View style={{flex:10}}>
-                <View style={styles.container}>
-                    {console.log(GLOBAL.darkMode)}
-                    <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-                    <View style={styles.circle} />
+            <View style={{ flex: 10 }}>
+                <View style={darkMode ? styles.container_dark : styles.container}>
+                    <StatusBar barStyle={'light-content'} />
+                    <View style={darkMode ? styles.circle_dark : styles.circle} />
                     <View style={{ marginTop: 10 }}>
                         <Image
                             source={require('../assets/AppIcon3.png')}
@@ -62,26 +58,25 @@ export default class SettingsScreen extends React.Component {
                     </View>
 
                     <View style={{ marginHorizontal: 32 }}>
-                        <Text style={styles.header}>Dark Mode</Text>
+                        <Text style={darkMode ? styles.header_dark : styles.header}>Dark Mode</Text>
                         <Switch
                             style={{ alignSelf: 'flex-start' }}
-                            trackColor={{ false: "#767577", true: "grey" }}
-                            thumbColor={this.state.darkMode ? "#d4973b" : "#f4f3f4"}
+                            trackColor={{ false: "#73767B", true: "#d4973b" }}
+                            thumbColor={"#FFFFFF"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={this.toggleDarkMode}
-                            value={this.state.darkMode}
+                            value={this.props.darkMode}
                         />
 
-                        <Text style={styles.header}>Show Bubbles</Text>
+                        <Text style={darkMode ? styles.header_dark : styles.header}>Show Bubbles</Text>
                         <Switch
                             style={{ alignSelf: 'flex-start' }}
-                            trackColor={{ false: "#767577", true: "grey" }}
-                            thumbColor={this.state.bubbles ? "#d4973b" : "#f4f3f4"}
+                            trackColor={{ false: "#73767B", true: "#d4973b" }}
+                            thumbColor={"#FFFFFF"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={this.toggleBubbles}
-                            value={this.state.bubbles}
+                            value={this.props.bubbles}
                         />
-
                         <View style={{ alignItems: 'flex-start', marginTop: 64 }}>
                             <TouchableOpacity style={styles.continue}
                                 onPress={this.back}>
@@ -102,11 +97,27 @@ export default class SettingsScreen extends React.Component {
     }
 }
 
+const mapStateToProps = ({ chat }) => {
+    const { darkMode, bubbles } = chat;
+
+    console.log('darkMode: ', darkMode);
+    console.log('bubbles: ', bubbles);
+
+    return { darkMode, bubbles };
+};
+
+export default connect(mapStateToProps, { darkModeChanged, bubblesChanged })(SettingsScreen);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Constants.statusBarHeight,
-        backgroundColor: '#1b2029' //1b2029  //  // F4F5F7
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#F4F5F7' //1b2029  //  // F4F5F7
+    },
+    container_dark: {
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#2E3236' //1b2029  //  // F4F5F7
     },
     circle: {
         width: 500,
@@ -118,10 +129,26 @@ const styles = StyleSheet.create({
         left: -120,
         top: -20
     },
+    circle_dark: {
+        width: 500,
+        height: 500,
+        borderRadius: 250,
+        borderColor: '#363A3E',
+        backgroundColor: 'grey', // #FFF //152136 // fcfced
+        position: 'absolute',
+        left: -120,
+        top: -20
+    },
     header: {
         fontWeight: '800',
         fontSize: 30,
         color: '#514E5A',
+        marginTop: 32,
+    },
+    header_dark: {
+        fontWeight: '800',
+        fontSize: 30,
+        color: '#FAFAFA',
         marginTop: 32,
     },
     input: {
