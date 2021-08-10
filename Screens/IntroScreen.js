@@ -28,7 +28,7 @@ class IntroScreen extends React.Component {
 
 
         this.bannerAdId = Platform.OS === 'ios' ? iosBanner : androidBanner;
-        // Interstitials not set up yet
+        // Interstitials not set up for IntroScreen
         this.interstitialAdId = Platform.OS === 'ios' ? iosInterstitial : androidInterstitial;
 
     }
@@ -54,7 +54,7 @@ class IntroScreen extends React.Component {
         return (
             <View style={{ flex: 10 }}>
                 <View style={darkMode ? styles.container_dark : styles.container}>
-                    <StatusBar barStyle={'light-content'} />
+                    <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
                     <View style={darkMode ? styles.circle_dark : styles.circle} />
                     <View style={{ marginTop: 10 }}>
                         <TouchableOpacity
@@ -69,7 +69,8 @@ class IntroScreen extends React.Component {
                     <View style={{ marginHorizontal: 32 }}>
                         <Text style={darkMode ? styles.header_dark : styles.header}>Username</Text>
                         <TextInput style={darkMode ? styles.input_dark : styles.input}
-                            placeholder="Dragonfire Messenger App"
+                            placeholder="Enter your username"
+                            placeholderTextColor='silver'
                             onChangeText={name => {
                                 this.props.nameChanged(name);
                             }}
@@ -78,7 +79,8 @@ class IntroScreen extends React.Component {
 
                         <Text style={darkMode ? styles.header_dark : styles.header}>Room Code</Text>
                         <TextInput style={darkMode ? styles.input_dark : styles.input}
-                            placeholder="Dragonfire Messenger App"
+                            placeholder="Enter the code for your room"
+                            placeholderTextColor='silver'
                             onChangeText={roomCode => {
                                 this.props.roomChanged(roomCode);
                             }}

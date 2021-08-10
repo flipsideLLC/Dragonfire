@@ -9,10 +9,20 @@ import { StatusBar } from 'expo-status-bar';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 import Fire from '../Fire';
 
+const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
+const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
+
 class ChatScreen extends React.Component {
 
-    state = {
-        messages: [],
+    constructor() {
+        super();
+
+        this.state = {
+            messages: [],
+            hasShownInterstitial: false,
+        }
+
+        this.interstitialAdId = Platform.OS === 'ios' ? iosInterstitial : androidInterstitial;
     }
 
     get user() {
@@ -29,6 +39,10 @@ class ChatScreen extends React.Component {
                 messages: GiftedChat.append(previous.messages, message)
             }))
         );
+        if(this.state.hasShownInterstitial === false){
+            this.setState({hasShownInterstitial: true});
+            this.showInterstitialAd();
+        }
     }
 
     componentWillUnmount() {
@@ -47,6 +61,18 @@ class ChatScreen extends React.Component {
             </View>
         )
     }
+
+    async showInterstitialAd() {
+        console.log('HELLO');
+        var randomNumber = Math.floor(Math.random() * 10) + 1;
+        console.log(randomNumber);
+        if ( randomNumber === 3 ) {
+            AdMobInterstitial.setAdUnitID(this.interstitialAdId);
+            await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+            await AdMobInterstitial.showAdAsync();
+          }
+       
+      }
 
     sendButton = (props) => {
         return (
