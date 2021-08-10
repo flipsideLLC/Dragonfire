@@ -22,10 +22,11 @@ class SettingsScreen extends React.Component {
     }
 
     render() {
+        const { darkMode } = this.props;
         return (
-            <View style={styles.container}>
-                <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-                <View style={styles.circle} />
+            <View style={darkMode ? styles.container_dark : styles.container}>
+                <StatusBar barStyle={'light-content'} />
+                <View style={darkMode ? styles.circle_dark : styles.circle} />
                 <View style={{ marginTop: 10 }}>
                     <Image
                         source={require('../assets/AppIcon3.png')}
@@ -34,21 +35,21 @@ class SettingsScreen extends React.Component {
                 </View>
 
                 <View style={{ marginHorizontal: 32 }}>
-                    <Text style={styles.header}>Dark Mode</Text>
+                    <Text style={darkMode ? styles.header_dark : styles.header}>Dark Mode</Text>
                     <Switch
                         style={{ alignSelf: 'flex-start' }}
-                        trackColor={{ false: "#767577", true: "grey" }}
-                        thumbColor={this.props.darkMode ? "#d4973b" : "#f4f3f4"}
+                        trackColor={{ false: "#73767B", true: "#d4973b" }}
+                        thumbColor={"#FFFFFF"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={this.toggleDarkMode}
                         value={this.props.darkMode}
                     />
 
-                    <Text style={styles.header}>Show Bubbles</Text>
+                    <Text style={darkMode ? styles.header_dark : styles.header}>Show Bubbles</Text>
                     <Switch
                         style={{ alignSelf: 'flex-start' }}
-                        trackColor={{ false: "#767577", true: "grey" }}
-                        thumbColor={this.props.bubbles ? "#d4973b" : "#f4f3f4"}
+                        trackColor={{ false: "#73767B", true: "#d4973b" }}
+                        thumbColor={"#FFFFFF"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={this.toggleBubbles}
                         value={this.props.bubbles}
@@ -73,15 +74,20 @@ const mapStateToProps = ({ chat }) => {
     console.log('bubbles: ', bubbles);
 
     return { darkMode, bubbles };
-}; 
+};
 
 export default connect(mapStateToProps, { darkModeChanged, bubblesChanged })(SettingsScreen);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Constants.statusBarHeight,
-        backgroundColor: '#1b2029' //1b2029  //  // F4F5F7
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#F4F5F7' //1b2029  //  // F4F5F7
+    },
+    container_dark: {
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#2E3236' //1b2029  //  // F4F5F7
     },
     circle: {
         width: 500,
@@ -93,10 +99,26 @@ const styles = StyleSheet.create({
         left: -120,
         top: -20
     },
+    circle_dark: {
+        width: 500,
+        height: 500,
+        borderRadius: 250,
+        borderColor: '#363A3E',
+        backgroundColor: 'grey', // #FFF //152136 // fcfced
+        position: 'absolute',
+        left: -120,
+        top: -20
+    },
     header: {
         fontWeight: '800',
         fontSize: 30,
         color: '#514E5A',
+        marginTop: 32,
+    },
+    header_dark: {
+        fontWeight: '800',
+        fontSize: 30,
+        color: '#FAFAFA',
         marginTop: 32,
     },
     input: {

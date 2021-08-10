@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import { connect } from 'react-redux';
 import { nameChanged, roomChanged } from '../actions';
-import { withOrientation } from "react-navigation";
 
 class IntroScreen extends React.Component {
 
@@ -30,7 +29,7 @@ class IntroScreen extends React.Component {
         const { darkMode } = this.props;
         return (
             <View style={darkMode ? styles.container_dark : styles.container}>
-                <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
+                <StatusBar barStyle={'light-content'} />
                 <View style={darkMode ? styles.circle_dark : styles.circle} />
                 <View style={{ marginTop: 10 }}>
                     <TouchableOpacity
@@ -43,8 +42,8 @@ class IntroScreen extends React.Component {
                 </View>
 
                 <View style={{ marginHorizontal: 32 }}>
-                    <Text style={styles.header}>Username</Text>
-                    <TextInput style={styles.input}
+                    <Text style={darkMode ? styles.header_dark : styles.header}>Username</Text>
+                    <TextInput style={darkMode ? styles.input_dark : styles.input}
                         placeholder="Dragonfire Messenger App"
                         onChangeText={name => {
                             this.props.nameChanged(name);
@@ -52,8 +51,8 @@ class IntroScreen extends React.Component {
                         value={this.props.name}
                     />
 
-                    <Text style={styles.header}>Room Code</Text>
-                    <TextInput style={styles.input}
+                    <Text style={darkMode ? styles.header_dark : styles.header}>Room Code</Text>
+                    <TextInput style={darkMode ? styles.input_dark : styles.input}
                         placeholder="Dragonfire Messenger App"
                         onChangeText={roomCode => {
                             this.props.roomChanged(roomCode);
@@ -88,13 +87,13 @@ export default connect(mapStateToProps, { nameChanged, roomChanged })(IntroScree
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Constants.statusBarHeight,
+        paddingTop: Constants.statusBarHeight,
         backgroundColor: '#F4F5F7' //1b2029  //  // F4F5F7
     },
     container_dark: {
         flex: 1,
-        marginTop: Constants.statusBarHeight,
-        backgroundColor: '#1b2029' //1b2029  //  // F4F5F7
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#2E3236' //1b2029  //  // F4F5F7
     },
     circle: {
         width: 500,
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
         width: 500,
         height: 500,
         borderRadius: 250,
-        borderColor: 'black',
+        borderColor: '#363A3E',
         backgroundColor: 'grey', // #FFF //152136 // fcfced
         position: 'absolute',
         left: -120,
@@ -122,6 +121,12 @@ const styles = StyleSheet.create({
         color: '#514E5A',
         marginTop: 32,
     },
+    header_dark: {
+        fontWeight: '800',
+        fontSize: 30,
+        color: '#FAFAFA',
+        marginTop: 32,
+    },
     input: {
         marginTop: 32,
         height: 50,
@@ -131,6 +136,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         backgroundColor: 'white',
         color: '#514E5A',
+        fontWeight: '600',
+    },
+    input_dark: {
+        marginTop: 32,
+        height: 50,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'black', // BAB7C3
+        borderRadius: 30,
+        paddingHorizontal: 16,
+        backgroundColor: '#41444A',
+        color: '#BABBBE',
         fontWeight: '600',
     },
     continue: {
