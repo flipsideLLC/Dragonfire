@@ -53,54 +53,57 @@ export default class IntroScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
-                <View style={styles.circle} />
-                <View style={{ marginTop: 10 }}>
-                    <TouchableOpacity
-                        onPress={this.settings}>
-                        <Image
-                            source={require('../assets/AppIcon3.png')}
-                            style={{ width: 64, height: 64, alignSelf: 'center' }}
-                        />
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ marginHorizontal: 32 }}>
-                    <Text style={styles.header}>Username</Text>
-                    <TextInput style={styles.input}
-                        placeholder="Dragonfire Messenger App"
-                        onChangeText={name => {
-                            this.setState({ name });
-                        }}
-                        value={this.state.name}
-                    />
-
-                    <Text style={styles.header}>Room Code</Text>
-                    <TextInput style={styles.input}
-                        placeholder="Dragonfire Messenger App"
-                        onChangeText={roomCode => {
-                            this.setState({ roomCode });
-                        }}
-                        value={this.state.roomCode}
-                    />
-
-                    <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
-                        <TouchableOpacity style={styles.continue}
-                            onPress={this.continue}>
-                            <Ionicons name='arrow-forward-outline' size={24} color='#FFF' />
+            <View style={{flex: 10}}>
+                <View style={styles.container}>
+                    <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
+                    <View style={styles.circle} />
+                    <View style={{ marginTop: 10 }}>
+                        <TouchableOpacity
+                            onPress={this.settings}>
+                            <Image
+                                source={require('../assets/AppIcon3.png')}
+                                style={{ width: 64, height: 64, alignSelf: 'center' }}
+                            />
                         </TouchableOpacity>
                     </View>
-                </View>
-                
-                <View style={{ width: windowWidth, flex: 1 }}>
-                        <AdMobBanner
-                            bannerSize="fullBanner"
-                            adUnitID={this.bannerAdId} // Test ID, Replace with your-admob-unit-id
-                            servePersonalizedAds={false} // true or false
+
+                    <View style={{ marginHorizontal: 32 }}>
+                        <Text style={styles.header}>Username</Text>
+                        <TextInput style={styles.input}
+                            placeholder="Dragonfire Messenger App"
+                            onChangeText={name => {
+                                this.setState({ name });
+                            }}
+                            value={this.state.name}
                         />
+
+                        <Text style={styles.header}>Room Code</Text>
+                        <TextInput style={styles.input}
+                            placeholder="Dragonfire Messenger App"
+                            onChangeText={roomCode => {
+                                this.setState({ roomCode });
+                            }}
+                            value={this.state.roomCode}
+                        />
+
+                        <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
+                            <TouchableOpacity style={styles.continue}
+                                onPress={this.continue}>
+                                <Ionicons name='arrow-forward-outline' size={24} color='#FFF' />
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
+                   
             </View>
+            <View style={{ width: windowWidth, flex: .1 }}>
+                            <AdMobBanner
+                                bannerSize="fullBanner"
+                                adUnitID={this.bannerAdId} // Test ID, Replace with your-admob-unit-id
+                                servePersonalizedAds={false} // true or false
+                            />
+                        </View>
+             </View>
         );
     }
 }

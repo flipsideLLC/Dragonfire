@@ -21,11 +21,9 @@
       "bundleIdentifier": "com.dntgames.dragonfire",
       "buildNumber": "1.0.0",
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-9889547844187480~7593078358" 
+        "googleMobileAdsAppId": "ca-app-pub-9889547844187480~7593078358"
       },
-      "infoPlist": {
-        
-      }
+      "infoPlist": {}
     },
     "android": {
       "adaptiveIcon": {
