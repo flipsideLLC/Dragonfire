@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Constants from 'expo-constants';
 import { PulseIndicator } from 'react-native-indicators';
 import { FontAwesome } from '@expo/vector-icons';
@@ -52,7 +52,7 @@ class ChatScreen extends React.Component {
     loading = () => {
         return (
             <View style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
-                <StatusBar barStyle="dark-content" backgroundColor={"#fff"} />
+                <StatusBar barStyle="light-content" backgroundColor={"#fff"} />
                 <PulseIndicator
                     animating
                     size={100}
@@ -66,7 +66,7 @@ class ChatScreen extends React.Component {
         console.log('HELLO');
         var randomNumber = Math.floor(Math.random() * 10) + 1;
         console.log(randomNumber);
-        if ( randomNumber === 3 ) {
+        if ( randomNumber === 13 ) {
             AdMobInterstitial.setAdUnitID(this.interstitialAdId);
             await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
             await AdMobInterstitial.showAdAsync();
@@ -81,7 +81,7 @@ class ChatScreen extends React.Component {
                     marginRight: -15, marginBottom: -20, width: 70,
                     height: 70,
                     borderRadius: 35,
-                    backgroundColor: '#d4973b', // 1b2029 // 
+                    backgroundColor: '#d4973b', // 1b2029 
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
@@ -139,8 +139,19 @@ class ChatScreen extends React.Component {
         />;
         return (
             <View style={darkMode ? styles.container_dark : styles.container}>
-                <StatusBar barStyle={'light-content'} />
-                {chat}
+                <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
+                    <StatusBar barStyle={'light-content'} />
+                        <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, marginRight: 20, marginTop: 10, marginBottom: -10}}>{this.props.roomCode}</Text>
+                        <TouchableOpacity style={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10, marginBottom: -10}}>
+                            <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 5}}>Share</Text>
+                        </TouchableOpacity>
+                    
+                </View>
+                <View style={darkMode ? styles.container_dark : styles.container}>
+                   
+                    
+                    {chat}
+                </View>
             </View>
         );
     }
@@ -150,14 +161,32 @@ class ChatScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Constants.statusBarHeight,
-        backgroundColor: 'white' //1b2029  //  // F4F5F7
+        // paddingTop: Constants.statusBarHeight,
+        backgroundColor: 'white', //1b2029  //  // F4F5F7,
     },
     container_dark: {
         flex: 1,
-        paddingTop: Constants.statusBarHeight,
-        backgroundColor: '#2E3236' //1b2029  //  // F4F5F7
+        // paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#2E3236', //1b2029  //  // F4F5F7
     },
+    topMenu: {
+        paddingTop: Constants.statusBarHeight,
+        paddingBottom: 20,
+        borderWidth: 1, 
+        borderColor: 'black', 
+        backgroundColor: '#252933', 
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    topMenuDark: {
+        paddingTop: Constants.statusBarHeight,
+        paddingBottom: 20,
+        borderWidth: 1, 
+        borderColor: 'black', 
+        backgroundColor: '#252933', //'#2b2d33', 
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    }
 });
 
 
