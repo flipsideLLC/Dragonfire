@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Share } from "react-native";
 import Constants from 'expo-constants';
 import { PulseIndicator } from 'react-native-indicators';
 import { FontAwesome } from '@expo/vector-icons';
@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 import Fire from '../Fire';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { SideMenu } from "./SideMenu";
 
 const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
@@ -20,8 +22,9 @@ class ChatScreen extends React.Component {
         this.state = {
             messages: [],
             hasShownInterstitial: false,
+            showMenu: false,
+            isMenuVisible: false,
         }
-
         this.interstitialAdId = Platform.OS === 'ios' ? iosInterstitial : androidInterstitial;
     }
 
@@ -63,7 +66,6 @@ class ChatScreen extends React.Component {
     }
 
     async showInterstitialAd() {
-        console.log('HELLO');
         var randomNumber = Math.floor(Math.random() * 10) + 1;
         console.log(randomNumber);
         if ( randomNumber === 13 ) {
@@ -71,9 +73,37 @@ class ChatScreen extends React.Component {
             await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
             await AdMobInterstitial.showAdAsync();
           }
-       
-      }
+    }
 
+    onShare = async () => {
+        try {
+          const result = await Share.share({
+            message:
+              'Join me on DragonChat! Room code is: ' + (this.props.roomCode) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: ',
+          });
+    
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              //
+            } else {
+              // 
+            }
+          } else if (result.action === Share.dismissedAction) {
+              //
+        }
+        } catch (error) {
+          alert(error.message);
+        }
+    };
+
+    onShowMenu = () => {
+        this.setState({showMenu: true, isMenuVisible: true});
+    }
+
+    onCloseMenu = () => {
+        this.setState({showMenu: false, isMenuVisible: false});
+    }
+    
     sendButton = (props) => {
         return (
             <Send {...props}>
@@ -137,23 +167,45 @@ class ChatScreen extends React.Component {
             renderBubble={this.customBubble}
             autoCorrect={false}
         />;
-        return (
-            <View style={darkMode ? styles.container_dark : styles.container}>
-                <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
-                    <StatusBar barStyle={'light-content'} />
-                        <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, marginRight: 20, marginTop: 10, marginBottom: -10}}>{this.props.roomCode}</Text>
-                        <TouchableOpacity style={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10, marginBottom: -10}}>
-                            <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 5}}>Share</Text>
-                        </TouchableOpacity>
-                    
-                </View>
+
+        if(!this.state.showMenu){
+            return (
                 <View style={darkMode ? styles.container_dark : styles.container}>
-                   
-                    
-                    {chat}
+                    <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
+                        <StatusBar barStyle={'light-content'} />
+                            <TouchableOpacity 
+                                style={{marginTop: 10, marginBottom: -10}}
+                                onPress={this.onShowMenu}
+                            >
+                                <FontAwesome5 style={{color: 'silver', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 5}} size={24} color="black" name='bars' />
+                            </TouchableOpacity>
+                            <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10}}>{this.props.roomCode}</Text>
+                    </View>
+                    <View style={darkMode ? styles.container_dark : styles.container}>
+                        {chat}
+                    </View>
                 </View>
-            </View>
-        );
+            );
+        }else{
+            return (
+                <View style={darkMode ? styles.container_dark : styles.container}>
+                    <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
+                        <StatusBar barStyle={'light-content'} />
+                        <SideMenu 
+                            visible={this.state.isMenuVisible}
+                            CloseModal={this.onCloseMenu.bind(this)}
+                            shareCode={this.onShare.bind(this)}
+                        />
+                            
+                            <FontAwesome5 style={{color: 'silver', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 5}} size={24} color="black" name='bars' />
+                        <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10}}>{this.props.roomCode}</Text>
+                    </View>
+                    <View style={darkMode ? styles.container_dark : styles.container}>                        
+                        {chat}
+                    </View>
+                </View>
+            );
+        }
     }
 }
 
