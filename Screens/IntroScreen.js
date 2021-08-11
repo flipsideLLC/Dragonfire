@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import _ from 'lodash';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
-import { nameChanged, roomChanged } from '../actions';
+import { nameChanged, roomChanged, pushRoom, clearState } from '../actions';
 import { StatusBar } from 'expo-status-bar';
 
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
@@ -41,8 +41,16 @@ class IntroScreen extends React.Component {
         if (_.isEmpty(this.props.roomCode)) {
             console.log('setting default room');
             this.props.roomChanged('general');
+        } else {
+            if (!_.includes(this.props.roomArray, this.props.roomCode)) {
+                this.props.pushRoom(this.props.roomCode);
+            }
         }
         this.props.navigation.navigate('Chat', {});
+    }
+
+    clearState = () => {
+        this.props.clearState();
     }
 
     settings = () => {
@@ -82,7 +90,7 @@ class IntroScreen extends React.Component {
                             placeholder="Enter the code for your room"
                             placeholderTextColor='silver'
                             onChangeText={roomCode => {
-                                this.props.roomChanged(roomCode);
+                                this.props.roomChanged(roomCode.toLowerCase());
                             }}
                             value={this.props.roomCode}
                         />
@@ -92,6 +100,13 @@ class IntroScreen extends React.Component {
                             <TouchableOpacity style={styles.continue}
                                 onPress={this.continue}>
                                 <Ionicons name='arrow-forward-outline' size={24} color='#FFF' />
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
+                            <TouchableOpacity style={styles.clearState}
+                                onPress={this.clearState}>
+                                <Ionicons name='trash' size={24} color='#FFF' />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -111,16 +126,17 @@ class IntroScreen extends React.Component {
 }
 
 const mapStateToProps = ({ chat }) => {
-    const { name, roomCode, darkMode } = chat;
+    const { name, roomCode, roomArray, darkMode } = chat;
 
     console.log('name: ', name);
     console.log('room: ', roomCode);
+    console.log('roomArray: ', roomArray);
     console.log('darkMode: ', darkMode);
 
-    return { name, roomCode, darkMode };
+    return { name, roomCode, roomArray, darkMode };
 };
 
-export default connect(mapStateToProps, { nameChanged, roomChanged })(IntroScreen);
+export default connect(mapStateToProps, { nameChanged, roomChanged, pushRoom, clearState })(IntroScreen);
 
 const styles = StyleSheet.create({
     container: {
@@ -195,14 +211,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    clearState: {
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        backgroundColor: 'red',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     adBanner: {
-        width: windowWidth, 
-        flex: .1,
-        backgroundColor: '#F4F5F7'
+        width: windowWidth,
+        backgroundColor: '#F4F5F7',
+        justifyContent: 'flex-end',
     },
     adBannerDark: {
-        width: windowWidth, 
-        flex: .1,
-        backgroundColor: '#2E3236'
+        width: windowWidth,
+        backgroundColor: '#2E3236',
+        justifyContent: 'flex-end',
     }
 });

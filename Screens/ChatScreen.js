@@ -42,8 +42,8 @@ class ChatScreen extends React.Component {
                 messages: GiftedChat.append(previous.messages, message)
             }))
         );
-        if(this.state.hasShownInterstitial === false){
-            this.setState({hasShownInterstitial: true});
+        if (this.state.hasShownInterstitial === false) {
+            this.setState({ hasShownInterstitial: true });
             this.showInterstitialAd();
         }
     }
@@ -68,42 +68,42 @@ class ChatScreen extends React.Component {
     async showInterstitialAd() {
         var randomNumber = Math.floor(Math.random() * 10) + 1;
         console.log(randomNumber);
-        if ( randomNumber === 13 ) {
+        if (randomNumber === 13) {
             AdMobInterstitial.setAdUnitID(this.interstitialAdId);
             await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
             await AdMobInterstitial.showAdAsync();
-          }
+        }
     }
 
     onShare = async () => {
         try {
-          const result = await Share.share({
-            message:
-              'Join me on DragonChat! Room code is: ' + (this.props.roomCode) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: ',
-          });
-    
-          if (result.action === Share.sharedAction) {
-            if (result.activityType) {
-              //
-            } else {
-              // 
+            const result = await Share.share({
+                message:
+                    'Join me on DragonChat! Room code is: ' + (this.props.roomCode) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: ',
+            });
+
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    //
+                } else {
+                    // 
+                }
+            } else if (result.action === Share.dismissedAction) {
+                //
             }
-          } else if (result.action === Share.dismissedAction) {
-              //
-        }
         } catch (error) {
-          alert(error.message);
+            alert(error.message);
         }
     };
 
     onShowMenu = () => {
-        this.setState({showMenu: true, isMenuVisible: true});
+        this.setState({ showMenu: true, isMenuVisible: true });
     }
 
     onCloseMenu = () => {
-        this.setState({showMenu: false, isMenuVisible: false});
+        this.setState({ showMenu: false, isMenuVisible: false });
     }
-    
+
     sendButton = (props) => {
         return (
             <Send {...props}>
@@ -153,8 +153,13 @@ class ChatScreen extends React.Component {
         );
     };
 
+    settings = () => {
+        this.props.navigation.navigate('Settings', {})
+    }
+
     render() {
         const { darkMode } = this.props;
+
         const chat = <GiftedChat
             messages={this.state.messages}
             onSend={Fire.send} user={this.user}
@@ -168,44 +173,35 @@ class ChatScreen extends React.Component {
             autoCorrect={false}
         />;
 
-        if(!this.state.showMenu){
-            return (
-                <View style={darkMode ? styles.container_dark : styles.container}>
-                    <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
-                        <StatusBar barStyle={'light-content'} />
-                            <TouchableOpacity 
-                                style={{marginTop: 10, marginBottom: -10}}
-                                onPress={this.onShowMenu}
-                            >
-                                <FontAwesome5 style={{color: 'silver', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 5}} size={24} color="black" name='bars' />
-                            </TouchableOpacity>
-                            <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10}}>{this.props.roomCode}</Text>
-                    </View>
-                    <View style={darkMode ? styles.container_dark : styles.container}>
-                        {chat}
-                    </View>
+        return (
+            <View style={darkMode ? styles.container_dark : styles.container}>
+                <StatusBar barStyle={'light-content'} />
+                <SideMenu
+                    visible={this.state.isMenuVisible}
+                    CloseModal={this.onCloseMenu.bind(this)}
+                    shareCode={this.onShare.bind(this)}
+                />
+                <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
+                    <TouchableOpacity
+                        style={{ marginTop: 10, marginBottom: -10 }}
+                        onPress={this.onShowMenu}
+                    >
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 20, paddingLeft: 10 }} size={24} color="black" name='bars' />
+                    </TouchableOpacity>
+                    <Text style={{ color: darkMode ? 'silver' : 'white', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10 }}>{this.props.roomCode}</Text>
+                    <TouchableOpacity
+                        style={{ marginTop: 10, marginBottom: -10 }}
+                        onPress={this.settings}
+                    >
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 20, paddingRight: 10 }} size={24} color="black" name='cog' />
+                    </TouchableOpacity>
                 </View>
-            );
-        }else{
-            return (
                 <View style={darkMode ? styles.container_dark : styles.container}>
-                    <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
-                        <StatusBar barStyle={'light-content'} />
-                        <SideMenu 
-                            visible={this.state.isMenuVisible}
-                            CloseModal={this.onCloseMenu.bind(this)}
-                            shareCode={this.onShare.bind(this)}
-                        />
-                            
-                            <FontAwesome5 style={{color: 'silver', fontWeight: 'bold', fontSize: 20, paddingHorizontal: 5}} size={24} color="black" name='bars' />
-                        <Text style={{color: 'silver', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10}}>{this.props.roomCode}</Text>
-                    </View>
-                    <View style={darkMode ? styles.container_dark : styles.container}>                        
-                        {chat}
-                    </View>
+                    {chat}
                 </View>
-            );
-        }
+            </View>
+        );
+
     }
 }
 
@@ -224,20 +220,20 @@ const styles = StyleSheet.create({
     topMenu: {
         paddingTop: Constants.statusBarHeight,
         paddingBottom: 20,
-        borderWidth: 1, 
-        borderColor: 'black', 
-        backgroundColor: '#252933', 
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: '#d4973b',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between'
     },
     topMenuDark: {
         paddingTop: Constants.statusBarHeight,
         paddingBottom: 20,
-        borderWidth: 1, 
-        borderColor: 'black', 
-        backgroundColor: '#252933', //'#2b2d33', 
+        borderWidth: 1,
+        borderColor: 'black',
+        backgroundColor: '#252933',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between'
     }
 });
 
