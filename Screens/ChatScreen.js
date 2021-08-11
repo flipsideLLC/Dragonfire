@@ -2,14 +2,13 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Share } from "react-native";
 import Constants from 'expo-constants';
 import { PulseIndicator } from 'react-native-indicators';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { GiftedChat, Send, InputToolbar, Bubble } from "react-native-gifted-chat";
 import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 import Fire from '../Fire';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { SideMenu } from "./SideMenu";
+import { SideMenu } from "../Components/SideMenu";
 
 const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
@@ -180,6 +179,7 @@ class ChatScreen extends React.Component {
                     visible={this.state.isMenuVisible}
                     CloseModal={this.onCloseMenu.bind(this)}
                     shareCode={this.onShare.bind(this)}
+                    roomList={this.props.roomArray}
                 />
                 <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
                     <TouchableOpacity
@@ -239,14 +239,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = ({ chat }) => {
-    const { name, roomCode, darkMode, bubbles } = chat;
-
-    console.log('name: ', name);
-    console.log('room: ', roomCode);
-    console.log('darkMode: ', darkMode);
-    console.log('bubbles: ', bubbles)
-
-    return { name, roomCode, darkMode, bubbles };
+    const { name, roomCode, roomArray, darkMode, bubbles } = chat;
+    return { name, roomCode, roomArray, darkMode, bubbles };
 };
 
 export default connect(mapStateToProps)(ChatScreen);
