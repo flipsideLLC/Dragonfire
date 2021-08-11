@@ -85,7 +85,7 @@ class SettingsScreen extends React.Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ width: windowWidth, flex: .1 }}>
+                <View style={darkMode ? styles.adBannerDark : styles.adBanner}>
                     <AdMobBanner
                         bannerSize="fullBanner"
                         adUnitID={this.bannerAdId} // Test ID, Replace with your-admob-unit-id
@@ -168,6 +168,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#d4973b',
         alignItems: 'center',
         justifyContent: 'center',
-
+    },
+    adBanner: {
+        width: windowWidth, 
+        flex: .1,
+        backgroundColor: '#F4F5F7'
+    },
+    adBannerDark: {
+        width: windowWidth, 
+        flex: .1,
+        backgroundColor: '#2E3236'
     }
 });
