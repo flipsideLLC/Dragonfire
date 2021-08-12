@@ -24,14 +24,14 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
                         style={{ width: 64, height: 64, alignSelf: 'center' }}
                     />
                 </View>
-                <View style={{ marginHorizontal: 15, marginTop: 30, marginBottom: 20 }}>
+                <View style={{ flex: 9, paddingBottom: 10, marginHorizontal: 15, marginTop: 30, marginBottom: 20 }}>
                     <Text style={{ fontWeight: 'bold', fontSize: 25 }}>Rooms:</Text>
                     <FlatList
                         data={roomList}
-                        keyExtractor={( item, index ) => index.toString() }
-                        renderItem={({ item, index }) => (
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => { shareCode() }}
+                                onPress={() => { shareCode(item) }}
                             >
                                 <View style={{ padding: 5, width: windowWidth * 0.90, backgroundColor: 'grey', marginTop: 10 }}>
                                     <Text style={{ fontSize: 20 }}>{item}</Text>
@@ -39,6 +39,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
                             </TouchableOpacity>
                         )}
                     />
+                    
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <View style={{ alignItems: 'flex-end', marginTop: 64, marginBottom: 20 }}>
@@ -50,7 +51,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
                             alignItems: 'center',
                             justifyContent: 'center',
                         }}
-                            onPress={() => { closeModal() }}>
+                            onPress={() => { CloseModal() }}>
                             <Ionicons name='arrow-back-outline' size={24} color='#FFF' />
                         </TouchableOpacity>
                     </View>

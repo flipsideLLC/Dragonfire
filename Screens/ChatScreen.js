@@ -74,11 +74,11 @@ class ChatScreen extends React.Component {
         }
     }
 
-    onShare = async () => {
+    onShare = async (code) => {
         try {
             const result = await Share.share({
                 message:
-                    'Join me on DragonChat! Room code is: ' + (this.props.roomCode) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: ',
+                    'Join me on DragonChat! Room code is: ' + (code) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: ',
             });
 
             if (result.action === Share.sharedAction) {
@@ -186,14 +186,14 @@ class ChatScreen extends React.Component {
                         style={{ marginTop: 10, marginBottom: -10 }}
                         onPress={this.onShowMenu}
                     >
-                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 20, paddingLeft: 10 }} size={24} color="black" name='bars' />
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 30, paddingLeft: 15 }} color="black" name='bars' />
                     </TouchableOpacity>
                     <Text style={{ color: darkMode ? 'silver' : 'white', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10 }}>{this.props.roomCode}</Text>
                     <TouchableOpacity
                         style={{ marginTop: 10, marginBottom: -10 }}
                         onPress={this.settings}
                     >
-                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 20, paddingRight: 10 }} size={24} color="black" name='cog' />
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 30, paddingRight: 15 }} color="black" name='cog' />
                     </TouchableOpacity>
                 </View>
                 <View style={darkMode ? styles.container_dark : styles.container}>
