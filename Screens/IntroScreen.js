@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { nameChanged, roomChanged, pushRoom, clearState } from '../actions';
 import { StatusBar } from 'expo-status-bar';
-import Toast from 'react-native-toast-message';
 
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 
@@ -16,6 +15,7 @@ const iosBanner = 'ca-app-pub-9889547844187480/5522831677';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 class IntroScreen extends React.Component {
 
@@ -23,8 +23,8 @@ class IntroScreen extends React.Component {
         super();
 
         this.state = {
-            name: '',
-            roomCode: '',
+            nameAlert: false,
+            roomAlert: false,
         };
 
 
@@ -60,35 +60,26 @@ class IntroScreen extends React.Component {
 
     updateNameInput = (name) => {
         if (name.length == 20) {
-            this.toast('error', 'The max name length is 20 characters!');
+            this.setState({ nameAlert: true })
         } else {
+            this.setState({ nameAlert: false })
             this.props.nameChanged(name);
         }
     }
 
     updateRoomInput = (roomCode) => {
         if (roomCode.length == 15) {
-            this.toast('error', 'Max room length is 15!');
+            this.setState({ roomAlert: true })
         } else {
+            this.setState({ roomAlert: false })
             this.props.roomChanged(roomCode.toLowerCase());
         }
-    }
-
-    toast = (type, message) => {
-        Toast.show({
-            type: type,
-            position: 'top',
-            text1: message,
-            visibilityTime: 2000,
-            autoHide: true,
-            topOffset: Constants.statusBarHeight + 20,
-        });
     }
 
     render() {
         const { darkMode } = this.props;
         return (
-            <View style={{ flex: 10 }}>
+            <View style={{ flex: 10, minHeight: Math.round(windowHeight) }}>
                 <View style={darkMode ? styles.container_dark : styles.container}>
                     <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
                     <View style={darkMode ? styles.circle_dark : styles.circle} />
@@ -113,6 +104,9 @@ class IntroScreen extends React.Component {
                             value={this.props.name}
                             maxLength={20}
                         />
+                        {this.state.nameAlert &&
+                            <Text style={{ marginLeft: 10, marginTop: 10, color: 'red' }}>The max name length is 20 characters!</Text>
+                        }
 
                         <Text style={darkMode ? styles.header_dark : styles.header}>Room Code</Text>
                         <TextInput style={darkMode ? styles.input_dark : styles.input}
@@ -124,6 +118,9 @@ class IntroScreen extends React.Component {
                             value={this.props.roomCode}
                             maxLength={15}
                         />
+                        {this.state.roomAlert &&
+                            <Text style={{ marginLeft: 10, marginTop: 10, color: 'red' }}>The max room length is 15 characters!</Text>
+                        }
 
 
                         <View style={{ alignItems: 'flex-end', marginTop: 64 }}>

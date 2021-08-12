@@ -7,7 +7,6 @@ import { GiftedChat, Send, InputToolbar, Bubble } from "react-native-gifted-chat
 import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
-import { LinearGradient } from 'expo-linear-gradient';
 import Fire from '../Fire';
 import { SideMenu } from "../Components/SideMenu";
 import { roomChanged, removeRoom } from '../actions';
