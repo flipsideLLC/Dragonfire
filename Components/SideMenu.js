@@ -15,7 +15,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
         Alert.alert(
             "Delete " + roomCode + '?',
             _.isEqual(roomCode, currentRoom) ?
-                'Are you sure you want to remove your current group?':
+                'Are you sure you want to remove your current group?' :
                 'Are you sure you want to remove this group?',
             [
                 {
@@ -31,7 +31,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
     const deleteActions = (roomCode) => {
         removeRoom(roomCode);
         setShow(false);
-        if( _.isEqual(roomCode, currentRoom)){
+        if (_.isEqual(roomCode, currentRoom)) {
             close();
             goBack();
         }
@@ -39,7 +39,15 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
 
     const close = () => {
         setShow(false);
-        CloseModal()
+        CloseModal();
+    }
+
+    const swapRooms = (roomCode) => {
+        if (!_.isEqual(roomCode, currentRoom)) {
+            changeRooms(roomCode);
+            setShow(false);
+            CloseModal();
+        }
     }
 
     return (
@@ -82,7 +90,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                                 <View style={{ flexDirection: 'column' }} >
                                     <View style={{ flexDirection: 'row' }}>
                                         <TouchableOpacity
-                                            onPress={() => { changeRooms(item) }}
+                                            onPress={() => { swapRooms(item) }}
                                         >
                                             <View style={{ borderRadius: 8, borderColor: item === currentRoom ? 'blue' : 'silver', borderWidth: item === currentRoom ? 3 : 1, padding: 5, width: windowWidth * 0.72, backgroundColor: darkMode ? 'black' : 'white', marginTop: 10 }}>
                                                 <Text style={{ color: darkMode ? 'white' : 'black', paddingLeft: 10, paddingBottom: 5, fontSize: 20 }}>{item}</Text>
@@ -91,7 +99,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                                     </View>
                                     {show &&
                                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                            <TouchableOpacity style={{
+                                            {!_.isEqual(item, 'general') && <TouchableOpacity style={{
                                                 marginLeft: 10,
                                                 marginTop: 10,
                                                 borderRadius: 8,
@@ -103,6 +111,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                                                 onPress={() => { confirmDelete(item) }}>
                                                 <Ionicons name='trash' size={24} color='#FFF' />
                                             </TouchableOpacity>
+                                            }
                                             <TouchableOpacity style={{
                                                 marginLeft: 10,
                                                 marginTop: 10,
@@ -115,18 +124,20 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                                                 onPress={() => { shareCode(item) }}>
                                                 <Ionicons name='share-social' size={24} color='#FFF' />
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={{
-                                                marginLeft: 10,
-                                                marginTop: 10,
-                                                borderRadius: 8,
-                                                width: 40,
-                                                backgroundColor: 'green',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                            }}
-                                                onPress={() => { changeRooms(item) }}>
-                                                <Ionicons name='arrow-redo' size={24} color='#FFF' />
-                                            </TouchableOpacity>
+                                            {!_.isEqual(item, currentRoom) &&
+                                                <TouchableOpacity style={{
+                                                    marginLeft: 10,
+                                                    marginTop: 10,
+                                                    borderRadius: 8,
+                                                    width: 40,
+                                                    backgroundColor: 'green',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                }}
+                                                    onPress={() => { swapRooms(item) }}>
+                                                    <Ionicons name='arrow-redo' size={24} color='#FFF' />
+                                                </TouchableOpacity>
+                                            }
                                         </View>
                                     }
                                 </View>
