@@ -7,9 +7,10 @@ import { GiftedChat, Send, InputToolbar, Bubble } from "react-native-gifted-chat
 import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
-import { LinearGradient } from 'expo-linear-gradient';
 import Fire from '../Fire';
 import { SideMenu } from "../Components/SideMenu";
+import { roomChanged, removeRoom } from '../actions';
+
 
 const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
@@ -157,8 +158,29 @@ class ChatScreen extends React.Component {
         this.props.navigation.navigate('Settings', {})
     }
 
+    changeRoom = (roomCode) => {
+        if (roomCode != this.props.roomCode) {
+            Fire.off();
+            Fire.setRoomCode(roomCode);
+            this.props.roomChanged(roomCode)
+            this.setState({ messages: [] })
+            Fire.get(message =>
+                this.setState(previous => ({
+                    messages: GiftedChat.append(previous.messages, message)
+                }))
+            );
+        }
+    }
+
     render() {
         const { darkMode, roomArray } = this.props;
+
+        const colors = [
+            '#388E3C',
+            '#152650',
+            '#B71C1C',
+            '#E64A19',
+        ];
 
         const chat = <GiftedChat
             messages={this.state.messages}
@@ -182,30 +204,24 @@ class ChatScreen extends React.Component {
                     shareCode={this.onShare.bind(this)}
                     roomList={roomArray}
                     darkMode={darkMode}
+                    changeRooms={this.changeRoom.bind(this)}
+                    currentRoom={this.props.roomCode}
+                    removeRoom={this.props.removeRoom.bind(this)}
+                    goBack={() => this.props.navigation.goBack()}
                 />
                 <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
-                    <LinearGradient
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            width: Dimensions.get('window').width,
-                            height: 50
-                        }}
-                        colors={['rgba(0, 0, 0, 0.5)', 'rgba(50, 50, 50, 0.0)']}
-                        pointerEvents={'none'}
-                    />
                     <TouchableOpacity
                         style={{ marginTop: 10, marginBottom: -10 }}
                         onPress={this.onShowMenu}
                     >
-                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 30, paddingLeft: 15 }} color="black" name='bars' />
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : '#514E5A', fontWeight: 'bold', fontSize: 30, paddingLeft: 15 }} color="black" name='bars' />
                     </TouchableOpacity>
-                    <Text style={{ color: darkMode ? 'silver' : 'white', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10 }}>{this.props.roomCode}</Text>
+                    <Text style={{ color: darkMode ? 'silver' : colors[Math.floor(Math.random() * 4)], fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10 }}>{this.props.roomCode}</Text>
                     <TouchableOpacity
                         style={{ marginTop: 10, marginBottom: -10 }}
                         onPress={this.settings}
                     >
-                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 30, paddingRight: 15 }} color="black" name='cog' />
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : '#514E5A', fontWeight: 'bold', fontSize: 30, paddingRight: 15 }} color="black" name='cog' />
                     </TouchableOpacity>
                 </View>
                 <View style={darkMode ? styles.container_dark : styles.container}>
@@ -231,8 +247,8 @@ const styles = StyleSheet.create({
     },
     topMenu: {
         paddingTop: Constants.statusBarHeight,
-        paddingBottom: 20,
-        backgroundColor: '#d4973b',
+        paddingBottom: 15,
+        backgroundColor: '#F4F5F7',
         borderBottomWidth: 1,
         borderBottomColor: 'silver',
         flexDirection: 'row',
@@ -240,7 +256,7 @@ const styles = StyleSheet.create({
     },
     topMenuDark: {
         paddingTop: Constants.statusBarHeight,
-        paddingBottom: 20,
+        paddingBottom: 15,
         borderBottomWidth: 1,
         borderBottomColor: 'black',
         backgroundColor: '#252933',
@@ -255,4 +271,4 @@ const mapStateToProps = ({ chat }) => {
     return { name, roomCode, roomArray, darkMode, bubbles };
 };
 
-export default connect(mapStateToProps)(ChatScreen);
+export default connect(mapStateToProps, { roomChanged, removeRoom })(ChatScreen);

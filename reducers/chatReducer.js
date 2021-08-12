@@ -4,6 +4,7 @@ import {
 	NAME_CHANGED,
 	ROOM_CHANGED,
 	PUSH_ROOM,
+	REMOVE_ROOM,
 	DARK_MODE_CHANGED,
 	BUBBLES_CHANGED,
 	CLEAR_STATE,
@@ -27,7 +28,9 @@ export default (state = INITIAL_STATE, action) => {
 		case ROOM_CHANGED:
 			return { ...state, roomCode: action.payload };
 		case PUSH_ROOM:
-			return { ...state, roomArray: _.concat(state.roomArray, action.payload)};
+			return { ...state, roomArray: _.concat(state.roomArray, action.payload) };
+		case REMOVE_ROOM:
+			return { ...state, roomArray: _.pull(state.roomArray, action.payload) };
 		case DARK_MODE_CHANGED:
 			return { ...state, darkMode: !state.darkMode };
 		case BUBBLES_CHANGED:

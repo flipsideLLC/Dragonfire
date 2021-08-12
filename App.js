@@ -15,6 +15,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createLogger } from 'redux-logger';
 import { persistStore, persistReducer } from 'redux-persist';
 
+import Toast from 'react-native-toast-message';
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
@@ -34,6 +36,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <AppContainer />
+          <Toast ref={(ref) => Toast.setRef(ref)} />
         </PersistGate>
       </Provider>
     );

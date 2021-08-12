@@ -2,6 +2,7 @@ import {
 	NAME_CHANGED,
 	ROOM_CHANGED,
 	PUSH_ROOM,
+	REMOVE_ROOM,
 	DARK_MODE_CHANGED,
 	BUBBLES_CHANGED,
 	CLEAR_STATE,
@@ -25,6 +26,13 @@ export const pushRoom = (room) => {
 	return {
 		type: PUSH_ROOM,
 		payload: room
+	}
+}
+
+export const removeRoom = (room) => {
+	return {
+		type: REMOVE_ROOM,
+		payload: room,
 	}
 }
 
