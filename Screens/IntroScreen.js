@@ -47,6 +47,7 @@ class IntroScreen extends React.Component {
                 this.props.pushRoom(this.props.roomCode);
             }
         }
+        this.setState({ nameAlert: false, roomAlert: false });
         this.props.navigation.navigate('Chat', {});
     }
 
@@ -55,6 +56,7 @@ class IntroScreen extends React.Component {
     }
 
     settings = () => {
+        this.setState({ nameAlert: false, roomAlert: false });
         this.props.navigation.navigate('Settings', {})
     }
 
