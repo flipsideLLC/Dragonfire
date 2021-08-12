@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Share } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Share, Dimensions } from "react-native";
 import Constants from 'expo-constants';
 import { PulseIndicator } from 'react-native-indicators';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { GiftedChat, Send, InputToolbar, Bubble } from "react-native-gifted-chat
 import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
+import { LinearGradient } from 'expo-linear-gradient';
 import Fire from '../Fire';
 import { SideMenu } from "../Components/SideMenu";
 
@@ -157,7 +158,7 @@ class ChatScreen extends React.Component {
     }
 
     render() {
-        const { darkMode } = this.props;
+        const { darkMode, roomArray } = this.props;
 
         const chat = <GiftedChat
             messages={this.state.messages}
@@ -179,9 +180,20 @@ class ChatScreen extends React.Component {
                     visible={this.state.isMenuVisible}
                     CloseModal={this.onCloseMenu.bind(this)}
                     shareCode={this.onShare.bind(this)}
-                    roomList={this.props.roomArray}
+                    roomList={roomArray}
+                    darkMode={darkMode}
                 />
                 <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
+                    <LinearGradient
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            width: Dimensions.get('window').width,
+                            height: 50
+                        }}
+                        colors={['rgba(0, 0, 0, 0.5)', 'rgba(50, 50, 50, 0.0)']}
+                        pointerEvents={'none'}
+                    />
                     <TouchableOpacity
                         style={{ marginTop: 10, marginBottom: -10 }}
                         onPress={this.onShowMenu}
@@ -220,17 +232,17 @@ const styles = StyleSheet.create({
     topMenu: {
         paddingTop: Constants.statusBarHeight,
         paddingBottom: 20,
-        borderWidth: 1,
-        borderColor: 'black',
         backgroundColor: '#d4973b',
+        borderBottomWidth: 1,
+        borderBottomColor: 'silver',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     topMenuDark: {
         paddingTop: Constants.statusBarHeight,
         paddingBottom: 20,
-        borderWidth: 1,
-        borderColor: 'black',
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
         backgroundColor: '#252933',
         flexDirection: 'row',
         justifyContent: 'space-between'

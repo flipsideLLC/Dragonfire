@@ -7,7 +7,7 @@ import Modal from 'react-native-modal';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
+const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode }) => {
     return (
         <Modal
             animationType={"fade"}
@@ -17,7 +17,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
             isVisible={visible}
             style={{ marginLeft: -20, marginVertical: -20, height: windowHeight }}
         >
-            <View style={{ flex: 1, width: windowWidth * 0.85, height: windowHeight, padding: 20, backgroundColor: '#f2f5f5', borderColor: 'silver', borderWidth: 1 }}>
+            <View style={{ flex: 1, width: windowWidth * 0.85, height: windowHeight, padding: 20, backgroundColor: darkMode ? '#2E3236' : '#f2f5f5', borderColor: 'silver', borderWidth: 1 }}>
                 <View style={{ marginTop: Constants.statusBarHeight + 5, alignSelf: 'center' }}>
                     <Image
                         source={require('../assets/AppIcon3.png')}
@@ -25,7 +25,7 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
                     />
                 </View>
                 <View style={{ flex: 9, paddingBottom: 10, marginHorizontal: 15, marginTop: 30, marginBottom: 20 }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 25 }}>Rooms:</Text>
+                    <Text style={{ color: darkMode ? 'white' : 'black', fontWeight: 'bold', fontSize: 25 }}>Rooms:</Text>
                     <FlatList
                         data={roomList}
                         keyExtractor={(item, index) => index.toString()}
@@ -33,8 +33,8 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList }) => {
                             <TouchableOpacity
                                 onPress={() => { shareCode(item) }}
                             >
-                                <View style={{ padding: 5, width: windowWidth * 0.90, backgroundColor: 'grey', marginTop: 10 }}>
-                                    <Text style={{ fontSize: 20 }}>{item}</Text>
+                                <View style={{ borderRadius: 8, borderColor: 'silver', borderWidth: 1, padding: 5, width: windowWidth * 0.650, backgroundColor: darkMode ? 'black' : 'white', marginTop: 10 }}>
+                                    <Text style={{ color: darkMode ? 'white' : 'black', paddingLeft: 10, paddingBottom: 5, fontSize: 20 }}>{item}</Text>
                                 </View>
                             </TouchableOpacity>
                         )}
