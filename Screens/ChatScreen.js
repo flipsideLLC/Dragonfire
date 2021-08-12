@@ -10,6 +10,8 @@ import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 import { LinearGradient } from 'expo-linear-gradient';
 import Fire from '../Fire';
 import { SideMenu } from "../Components/SideMenu";
+import { roomChanged, removeRoom } from '../actions';
+
 
 const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
@@ -157,6 +159,20 @@ class ChatScreen extends React.Component {
         this.props.navigation.navigate('Settings', {})
     }
 
+    changeRoom = (roomCode) => {
+        if (roomCode != this.props.roomCode) {
+            Fire.off();
+            Fire.setRoomCode(roomCode);
+            this.props.roomChanged(roomCode)
+            this.setState({ messages: [] })
+            Fire.get(message =>
+                this.setState(previous => ({
+                    messages: GiftedChat.append(previous.messages, message)
+                }))
+            );
+        }
+    }
+
     render() {
         const { darkMode, roomArray } = this.props;
 
@@ -182,6 +198,10 @@ class ChatScreen extends React.Component {
                     shareCode={this.onShare.bind(this)}
                     roomList={roomArray}
                     darkMode={darkMode}
+                    changeRooms={this.changeRoom.bind(this)}
+                    currentRoom={this.props.roomCode}
+                    removeRoom={this.props.removeRoom.bind(this)}
+                    goBack={() => this.props.navigation.goBack()}
                 />
                 <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
                     <LinearGradient
@@ -255,4 +275,4 @@ const mapStateToProps = ({ chat }) => {
     return { name, roomCode, roomArray, darkMode, bubbles };
 };
 
-export default connect(mapStateToProps)(ChatScreen);
+export default connect(mapStateToProps, { roomChanged, removeRoom })(ChatScreen);

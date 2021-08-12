@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import { connect } from 'react-redux';
 import { nameChanged, roomChanged, pushRoom, clearState } from '../actions';
 import { StatusBar } from 'expo-status-bar';
+import Toast from 'react-native-toast-message';
 
 import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
 
@@ -57,6 +58,33 @@ class IntroScreen extends React.Component {
         this.props.navigation.navigate('Settings', {})
     }
 
+    updateNameInput = (name) => {
+        if (name.length == 20) {
+            this.toast('error', 'The max name length is 20 characters!');
+        } else {
+            this.props.nameChanged(name);
+        }
+    }
+
+    updateRoomInput = (roomCode) => {
+        if (roomCode.length == 15) {
+            this.toast('error', 'Max room length is 15!');
+        } else {
+            this.props.roomChanged(roomCode.toLowerCase());
+        }
+    }
+
+    toast = (type, message) => {
+        Toast.show({
+            type: type,
+            position: 'top',
+            text1: message,
+            visibilityTime: 2000,
+            autoHide: true,
+            topOffset: Constants.statusBarHeight + 20,
+        });
+    }
+
     render() {
         const { darkMode } = this.props;
         return (
@@ -80,9 +108,10 @@ class IntroScreen extends React.Component {
                             placeholder="Enter your username"
                             placeholderTextColor='silver'
                             onChangeText={name => {
-                                this.props.nameChanged(name);
+                                this.updateNameInput(name);
                             }}
                             value={this.props.name}
+                            maxLength={20}
                         />
 
                         <Text style={darkMode ? styles.header_dark : styles.header}>Room Code</Text>
@@ -90,9 +119,10 @@ class IntroScreen extends React.Component {
                             placeholder="Enter the code for your room"
                             placeholderTextColor='silver'
                             onChangeText={roomCode => {
-                                this.props.roomChanged(roomCode.toLowerCase());
+                                this.updateRoomInput(roomCode);
                             }}
                             value={this.props.roomCode}
+                            maxLength={15}
                         />
 
 
