@@ -27,11 +27,9 @@ class IntroScreen extends React.Component {
             roomAlert: false,
         };
 
-
         this.bannerAdId = Platform.OS === 'ios' ? iosBanner : androidBanner;
         // Interstitials not set up for IntroScreen
         this.interstitialAdId = Platform.OS === 'ios' ? iosInterstitial : androidInterstitial;
-
     }
 
     continue = () => {

@@ -105,13 +105,13 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                                             <TouchableOpacity
                                                 onPress={() => { swapRooms(item) }}
                                             >
-                                                <View style={{ borderRadius: 8, borderColor: item === currentRoom ? '#d4973b' : 'silver', borderWidth: item === currentRoom ? 5 : 1, padding: 5, width: windowWidth * 0.72, backgroundColor: darkMode ? 'black' : 'white', marginTop: 10 }}>
+                                                <View style={{ borderRadius: 8, borderColor: item === currentRoom ? '#d4973b' : 'silver', borderWidth: item === currentRoom ? 5 : 1, padding: 5, width: windowWidth * 0.7, backgroundColor: darkMode ? 'black' : 'white', marginTop: 10 }}>
                                                     <Text style={{ color: darkMode ? 'white' : 'black', paddingLeft: 10, paddingBottom: 5, fontSize: 20 }}>{item}</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         </View>
                                         {show &&
-                                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 5 }}>
                                                 {!_.isEqual(item, 'general') && <TouchableOpacity style={{
                                                     marginLeft: 10,
                                                     marginTop: 10,
