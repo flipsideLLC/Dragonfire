@@ -80,7 +80,7 @@ class ChatScreen extends React.Component {
         try {
             const result = await Share.share({
                 message:
-                    'Join me on DragonChat! Room code is: ' + (code) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: ',
+                    'Join me on DragonChat! Room code is: ' + (code) + ' \n Get the app on iOS: https://apps.apple.com/us/app/dragonchat/id1580447308 \n and android: https://play.google.com/store/apps/details?id=com.dntgames.dragonfire',
             });
 
             if (result.action === Share.sharedAction) {
