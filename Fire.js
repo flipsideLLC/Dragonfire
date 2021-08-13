@@ -48,8 +48,6 @@ class Fire {
         });
     };
 
-    // How to send a message to certain group
-
     parse = message => {
         const { user, text, timestamp } = message.val()
         const { key: _id } = message
