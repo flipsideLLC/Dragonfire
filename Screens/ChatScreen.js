@@ -69,7 +69,7 @@ class ChatScreen extends React.Component {
     async showInterstitialAd() {
         var randomNumber = Math.floor(Math.random() * 10) + 1;
         console.log(randomNumber);
-        if (randomNumber === 13) {
+        if (randomNumber === 3) {
             AdMobInterstitial.setAdUnitID(this.interstitialAdId);
             await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
             await AdMobInterstitial.showAdAsync();
