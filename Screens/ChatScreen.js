@@ -6,11 +6,12 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { GiftedChat, Send, InputToolbar, Bubble } from "react-native-gifted-chat";
 import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
-import { AdMobBanner, AdMobInterstitial } from 'expo-ads-admob';
+import { AdMobInterstitial } from 'expo-ads-admob';
 import Fire from '../Fire';
 import { SideMenu } from "../Components/SideMenu";
 import { roomChanged, removeRoom } from '../actions';
 
+const windowWidth = Dimensions.get('window').width;
 
 const androidInterstitial = 'ca-app-pub-9889547844187480/5841012986';
 const iosInterstitial = 'ca-app-pub-9889547844187480/6279996688';
@@ -175,13 +176,6 @@ class ChatScreen extends React.Component {
     render() {
         const { darkMode, roomArray } = this.props;
 
-        const colors = [
-            '#388E3C',
-            '#152650',
-            '#B71C1C',
-            '#E64A19',
-        ];
-
         const chat = <GiftedChat
             messages={this.state.messages}
             onSend={Fire.send} user={this.user}
@@ -197,7 +191,13 @@ class ChatScreen extends React.Component {
 
         return (
             <View style={darkMode ? styles.container_dark : styles.container}>
-                <StatusBar barStyle={'light-content'} />
+                { /* this view is required because statusbar background color is only for android, and we have to pad the content down for android */ }
+                <View style={{ backgroundColor: 'black', height: Platform.OS === 'ios' ? Constants.statusBarHeight - 8 : Constants.statusBarHeight, width: windowWidth }} />
+                <StatusBar
+                    animated={true}
+                    backgroundColor="black" // android only
+                    style={'light'} // icon colors
+                />
                 <SideMenu
                     visible={this.state.isMenuVisible}
                     CloseModal={this.onCloseMenu.bind(this)}
@@ -211,17 +211,17 @@ class ChatScreen extends React.Component {
                 />
                 <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
                     <TouchableOpacity
-                        style={{ marginTop: 10, marginBottom: -10 }}
+                        style={{ }}
                         onPress={this.onShowMenu}
                     >
-                        <FontAwesome5 style={{ color: darkMode ? 'silver' : '#514E5A', fontWeight: 'bold', fontSize: 30, paddingLeft: 15 }} color="black" name='bars' />
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 30, paddingLeft: 15 }} color="black" name='bars' />
                     </TouchableOpacity>
-                    <Text style={{ color: darkMode ? 'silver' : colors[Math.floor(Math.random() * 4)], fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: -10 }}>{this.props.roomCode}</Text>
+                    <Text style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 20, paddingTop: 5 }}>{this.props.roomCode}</Text>
                     <TouchableOpacity
-                        style={{ marginTop: 10, marginBottom: -10 }}
+                        style={{ }}
                         onPress={this.settings}
                     >
-                        <FontAwesome5 style={{ color: darkMode ? 'silver' : '#514E5A', fontWeight: 'bold', fontSize: 30, paddingRight: 15 }} color="black" name='cog' />
+                        <FontAwesome5 style={{ color: darkMode ? 'silver' : 'black', fontWeight: 'bold', fontSize: 30, paddingRight: 15 }} color="black" name='cog' />
                     </TouchableOpacity>
                 </View>
                 <View style={darkMode ? styles.container_dark : styles.container}>
@@ -237,26 +237,22 @@ class ChatScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // paddingTop: Constants.statusBarHeight,
         backgroundColor: 'white', //1b2029  //  // F4F5F7,
     },
     container_dark: {
         flex: 1,
-        // paddingTop: Constants.statusBarHeight,
         backgroundColor: '#2E3236', //1b2029  //  // F4F5F7
     },
     topMenu: {
-        paddingTop: Constants.statusBarHeight,
-        paddingBottom: 15,
-        backgroundColor: '#F4F5F7',
+        paddingVertical: 5,
+        backgroundColor: '#d4973b',
         borderBottomWidth: 1,
         borderBottomColor: 'silver',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     topMenuDark: {
-        paddingTop: Constants.statusBarHeight,
-        paddingBottom: 15,
+        paddingVertical: 5,
         borderBottomWidth: 1,
         borderBottomColor: 'black',
         backgroundColor: '#252933',
