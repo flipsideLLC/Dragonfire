@@ -9,7 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AdMobInterstitial } from 'expo-ads-admob';
 import Fire from '../Fire';
 import { SideMenu } from "../Components/SideMenu";
-import { roomChanged, removeRoom } from '../actions';
+import { roomChanged, removeRoom, pushRoom } from '../actions';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -45,8 +45,8 @@ class ChatScreen extends React.Component {
             }))
         );
         if (this.state.hasShownInterstitial === false) {
-            this.setState({ hasShownInterstitial: true });
-            this.showInterstitialAd();
+            // this.setState({ hasShownInterstitial: true });
+            // this.showInterstitialAd();
         }
     }
 
@@ -207,6 +207,7 @@ class ChatScreen extends React.Component {
                     changeRooms={this.changeRoom.bind(this)}
                     currentRoom={this.props.roomCode}
                     removeRoom={this.props.removeRoom.bind(this)}
+                    pushRoom={this.props.pushRoom.bind(this)}
                     goBack={() => this.props.navigation.goBack()}
                 />
                 <View style={darkMode ? styles.topMenuDark : styles.topMenu}>
@@ -267,4 +268,4 @@ const mapStateToProps = ({ chat }) => {
     return { name, roomCode, roomArray, darkMode, bubbles };
 };
 
-export default connect(mapStateToProps, { roomChanged, removeRoom })(ChatScreen);
+export default connect(mapStateToProps, { roomChanged, removeRoom, pushRoom })(ChatScreen);

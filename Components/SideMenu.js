@@ -5,12 +5,17 @@ import Constants from 'expo-constants';
 import Modal from 'react-native-modal';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import _ from 'lodash';
+import Dialog from "react-native-dialog";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRooms, currentRoom, removeRoom, goBack }) => {
+const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRooms, currentRoom, removeRoom, pushRoom, goBack }) => {
     const [show, setShow] = useState(false);
+    const [showInput, setShowInput] = useState(false);
+    const [newRoomName, setNewRoomName] = useState('');
+    const [alert, setAlert] = useState(false);
+
 
     const confirmDelete = (roomCode) => {
         Alert.alert(
@@ -22,10 +27,58 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                 {
                     text: "Cancel",
                     onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
                 },
-                { text: "Delete", onPress: () => deleteActions(roomCode) }
+                {
+                    text: "Delete",
+                    onPress: () => deleteActions(roomCode)
+                }
             ]
+        );
+    }
+
+    // <Dialog.Container visible={showInput}>
+    //     <Dialog.Title>Add a New Room</Dialog.Title>
+    //     <Dialog.Description>
+    //         Type in the name of the room you would like to add:
+    //     </Dialog.Description>
+    //     <Dialog.Input
+    //         placeholder="Enter new room name"
+    //         placeholderTextColor='silver'
+    //         onChangeText={name => {
+    //             updateRoomInput(name);
+    //         }}
+    //         value={newRoomName}
+    //         maxLength={20}
+    //     />
+    //     {alert &&
+    //         <Text style={{ marginLeft: 10, color: 'red' }}>The max room length is 15 characters!</Text>
+    //     }
+    //     <Dialog.Button label="Cancel" onPress={() => {
+    //         console.log("Cancel Pressed")
+    //         setNewRoomName('');
+    //     }} />
+    //     <Dialog.Button label="Add" onPress={() => {
+    //         pushRoom(newRoomName.toLowerCase());
+    //         setNewRoomName('');
+    //     }} />
+
+    const addRoom = (newRoomCode) => {
+        Alert.prompt(
+            'Add a New Room',
+            'Type in the name of the room you would like to add:',
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => {
+                        console.log("Cancel Pressed")
+                    },
+                },
+                {
+                    text: "Add", onPress: (name) => {
+                        pushRoom(name.toLowerCase());
+                    }
+                }
+            ],
         );
     }
 
@@ -51,10 +104,51 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
         }
     }
 
+    const updateRoomInput = (newRoomCode) => {
+        if (newRoomCode.length >= 15) {
+            setAlert(true);
+            setNewRoomName(newRoomCode.slice(0, 15));
+        } else {
+            setAlert(false);
+            setNewRoomName(newRoomCode);
+        }
+    }
+
     return (
         <GestureRecognizer
             onSwipeLeft={() => close()}
         >
+            <Dialog.Container style={{ flex: 1 }} visible={showInput}>
+                <Dialog.Title>Add a New Room</Dialog.Title>
+                <Dialog.Description>
+                    Type in the name of the room you would like to add:
+                </Dialog.Description>
+                <Dialog.Input
+                    placeholder="Enter new room name"
+                    placeholderTextColor='silver'
+                    onChangeText={name => {
+                        updateRoomInput(name);
+                    }}
+                    value={newRoomName}
+                    maxLength={20}
+                />
+                {alert &&
+                    <Text style={{ marginLeft: 10, color: 'red' }}>The max room length is 15 characters!</Text>
+                }
+                <Dialog.Button label="Cancel" onPress={() => {
+                    setShowInput(false);
+                    setNewRoomName('');
+                    setAlert(false)
+                }} />
+                <Dialog.Button label="Add" onPress={() => {
+                    if (!_.includes(roomList, newRoomName.toLowerCase())) {
+                        pushRoom(newRoomName.toLowerCase());
+                    }
+                    setShowInput(false);
+                    setNewRoomName('');
+                    setAlert(false);
+                }} />
+            </Dialog.Container>
             <Modal
                 animationType={"fade"}
                 animationIn={"slideInLeft"}
@@ -82,18 +176,36 @@ const SideMenu = ({ visible, CloseModal, shareCode, roomList, darkMode, changeRo
                     <View style={{ flex: 9, paddingBottom: 10, marginHorizontal: 15, marginTop: 30, marginBottom: 20 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
                             <Text style={{ color: darkMode ? 'white' : 'black', fontWeight: 'bold', fontSize: 25, alignSelf: 'center' }}>Rooms:</Text>
-                            <TouchableOpacity style={{
-                                borderRadius: 8,
-
-                                width: 40,
-                                height: 40,
-                                backgroundColor: show ? 'red' : 'grey',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                                onPress={() => { setShow(!show) }}>
-                                <MaterialIcons name={show ? 'close' : 'edit'} size={24} color={'#FFF'} />
-                            </TouchableOpacity>
+                            <View style={{ flexDirection: 'row' }}>
+                                {show &&
+                                    <TouchableOpacity style={{
+                                        borderRadius: 8,
+                                        width: 40,
+                                        height: 40,
+                                        marginRight: 10,
+                                        backgroundColor: 'green',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                        onPress={() => {
+                                            setShowInput(true);
+                                            console.log('onpress');
+                                        }}>
+                                        <MaterialIcons name={'add'} size={24} color={'#FFF'} />
+                                    </TouchableOpacity>
+                                }
+                                <TouchableOpacity style={{
+                                    borderRadius: 8,
+                                    width: 40,
+                                    height: 40,
+                                    backgroundColor: show ? 'red' : 'grey',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                                    onPress={() => { setShow(!show) }}>
+                                    <MaterialIcons name={show ? 'close' : 'edit'} size={24} color={'#FFF'} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <FlatList
                             data={roomList}

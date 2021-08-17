@@ -130,12 +130,12 @@ class IntroScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        {/* <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
+                        <View style={{ alignItems: 'flex-end', marginTop: 64 }}>
                             <TouchableOpacity style={styles.clearState}
                                 onPress={this.clearState}>
                                 <Ionicons name='trash' size={24} color='#FFF' />
                             </TouchableOpacity>
-                        </View> */}
+                        </View>
                     </View>
 
 
